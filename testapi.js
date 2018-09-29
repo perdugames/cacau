@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------- */
-/* -------------------- Test API --------------------------------- */
+/* ------------------- Test API ---------------------------------- */
 /* --------------------------------------------------------------- */
 
 const TEST = (fileName, ...testFunctions) => {
@@ -11,7 +11,7 @@ const TEST = (fileName, ...testFunctions) => {
     
     for (let f of testFunctions) {
         const testDetails = f;
-        ;
+        testDetails.resultTest==='passed'?passing.push(testDetails):failing.push(testDetails);
     }
     
     const tEnd = performance.now();
