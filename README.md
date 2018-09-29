@@ -6,7 +6,7 @@ To use you can check the files **object1EqualsObject2_test.js** and **composeobj
 To call the files, you create a file, I called it **runtests.js**, you can give the name you want, as below:
 
 #### runtests.js
-```
+```javascript
 // UNITS
 import './testapi/object1EqualsObject2_test';
 import './testapi/composeobject_test';
@@ -14,7 +14,7 @@ import './testapi/composeobject_test';
 And call import the "runtests.js" into your main file, as below:
 
 #### main.js
-```
+```javascript
 import './runtests.js';
 // ...
 ```
