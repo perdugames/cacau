@@ -2,77 +2,107 @@
 /* ------------------- Test API ---------------------------------- */
 /* --------------------------------------------------------------- */
 
+let FIX = {};
+
+const CREATE_FIXTURE = (f) => {
+    FIX = f();
+    return FIX;
+};
+
 const TEST = (fileName, ...testFunctions) => {
     const passing = [];
     const failing = [];
-    let resultStg = 'Running unit tests in '+fileName+':\n\n';
     
     const tStart = performance.now();
     
-    for (let f of testFunctions) {
-        const testDetails = f;
-        testDetails.resultTest==='passed'?passing.push(testDetails):failing.push(testDetails);
-    }
+    for (let test of testFunctions)
+        test.result === 'passed' ? passing.push(test) : failing.push(test);
     
     const tEnd = performance.now();
     const duration = tEnd - tStart;
     
     const lenPassing = passing.length;
     const lenFailing = failing.length;
-    resultStg += 'Passing: '+lenPassing+' ('+duration.toFixed(2)+'ms)\n';
-    resultStg += 'Failing: '+lenFailing+'\n\n';
     
-    let colorStg = '';
-    if (lenFailing > 0) {
-        const stgFailingTest = createStringFailingTest(failing, lenFailing);
-        resultStg += stgFailingTest+'\n';
-        colorStg = 'color:#B03A2E;';
-    } else {
-        resultStg = '✓ Passing '+fileName+'\n';
-        colorStg = 'color:#27AE60;';
+    const test = {
+        fileName: fileName,
+        duration: duration,
+        passing: passing,
+        failing: failing,
+        lenPassing: lenPassing, 
+        lenFailing: lenFailing, 
+    };
+    
+    const result = lenFailing > 0 ? createUnitTestFailingText(test) : createUnitTestPassingText(test);
+    
+    console.log('%c'+result.text, result.color);  
+};
+
+const createUnitTestFailingText = (test) => {
+    let text = createFailingText(test);
+    for (let i = 0; i < test.lenFailing; i++) {
+       text += (i + ') ' + test.failing[i].name 
+                + ' (' + test.failing[i].duration.toFixed(2) + 'ms)' + '\n'
+                + '       CheckError: '
+                + test.failing[i].actual + ' ' + test.failing[i].checkType + ' ' + test.failing[i].expected + '\n\n'
+                + '       ✓ Actual: '
+                + test.failing[i].actual + '\n'
+                + '       ✓ Expected: '
+                + test.failing[i].expected + '\n' + '\n'
+               );
     }
-    
-    console.log('%c'+resultStg, colorStg);
-    
+    text += '\n';
+    const result = { text: text, color: 'color:#B03A2E;' };
+    return result;    
 };
 
-const createStringFailingTest = (failing, lenFailing) => {
-    let stgFailingTest = '';
-        for(let i = 0; i < lenFailing; i++){
-           stgFailingTest += (i + ') ' + failing[i].nameTest 
-                              + ' (' + failing[i].durationTest.toFixed(2) + 'ms)' + '\n'
-                              + '       CheckError: ' + failing[i].actual + ' ' + failing[i].checkType + ' ' + failing[i].expected + '\n\n'
-                              + '       ✓ Actual: ' + failing[i].actual + '\n'
-                              + '       ✓ Expected: ' + failing[i].expected + '\n' + '\n'
-                             );
-        }
-    return stgFailingTest;    
+const createFailingText = (test) => {
+    let text = 'Running unit tests in ' + test.fileName + ':\n\n';
+             + 'Passing: ' + test.lenPassing + ' (' + test.duration.toFixed(2) + 'ms)\n';
+             + 'Failing: ' + test.lenFailing + '\n\n';
+    return text;  
 };
 
-const TEST_F = (nameTest, f) => {
+const createUnitTestPassingText = (test) => ({
+    text: '✓ Passing '+test.fileName+'\n', 
+    color: 'color:#27AE60;'
+});
+
+const UNIT = (name, f) => {
     const tStart = performance.now();
-    const checkInfo = f();
+    const check = f();
     const tEnd = performance.now();
-    const durationTest = tEnd - tStart;
-    const testDetails = { 
-        nameTest: nameTest, 
-        durationTest: durationTest,
-        resultTest: checkInfo.result,
-        actual: checkInfo.actual,
-        expected: checkInfo.expected,
-        checkType: checkInfo.checkType
-    }; 
-    return testDetails;
+    const duration = tEnd - tStart;
+    
+    const test = createTest(name, check.result);
+    const unit = createUnit(check.actual, check.expected, check.checkType, duration);
+    
+    const details = composeObject(test, unit);
+    
+    return details;
 };
+
+const createTest = (name, result) => ({
+    name: name,
+    result: result
+});
+
+const createUnit = (actual, expected, checkType, duration) => ({
+    actual: actual,
+    expected: expected,
+    checkType: checkType,
+    duration: duration
+});
+
+//const PERFORMANCE = (nameTest, f) => {};
 
 const CREATE_MOCK = (...objs) => composeObject(...objs);
 
 const composeObject = (...objs) => {
     let composedObject = {};
     
-    for (let obj of objs) {        
-        assignDeepEnumerablesToOut(obj, composedObject);    
-    }
+    for (let obj of objs)       
+        assignDeepEnumerablesToOut(obj, composedObject);
 
     return composedObject;
 };
@@ -89,43 +119,55 @@ const assignDeepEnumerablesToOut = (obj, out) => {
     }  
 };
 
+const CheckTypes = {
+    EQUAL: '===',
+    NOT_EQUAL: '!=='
+};
+
 const CHECK_ACTUAL_EQUAL_EXPECTED = (actual, expected) => {
-    const checkDetails = createCheckResult(actual, expected, '===');
-    (actual === expected) ? checkDetails.result = 'passed' : checkDetails.result = 'failed';
-    return checkDetails;
+    const result = createResult((actual === expected));
+    const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
+    return check;
 };
 
 const CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT = (actual, expected) => {
-    if (!isObject(actual) || !isObject(expected)) {
-        return { result: 'failed', actual: actual, expected: expected, checkType: '===' };
-    }
-    const checkDetails = createCheckResult(actual, expected, '===');
-    object1EqualsObject2(actual, expected) ? checkDetails.result = 'passed' : checkDetails.result = 'failed';
-    return checkDetails;
+    if (areNotObject(actual, expected))
+        return createCheck('failed', actual, expected, CheckTypes.EQUAL);
+    
+    const result = createResult(object1EqualsObject2(actual, expected));
+    const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
+    return check;
 };
 
 const CHECK_ACTUAL_DIFFERENT_EXPECTED = (actual, expected) => {
-    const checkDetails = createCheckResult(actual, expected, '!==');
-    (actual !== expected) ? checkDetails.result = 'passed' : checkDetails.result = 'failed';
-    return checkDetails;
+    const result = createResult((actual !== expected));
+    const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
+    return check;
 };
 
 const CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT = (actual, expected) => {
-    if (!isObject(actual) || !isObject(expected)) {
-        return { result: 'failed', actual: actual, expected: expected, checkType: '===' };
-    }
-    const checkDetails = createCheckResult(actual, expected, '!==');
-    !object1EqualsObject2(actual, expected) ? checkDetails.result = 'passed' : checkDetails.result = 'failed';
-    return checkDetails;
+    if (areNotObject(actual, expected))
+        return createCheck('failed', actual, expected, CheckTypes.NOT_EQUAL);
+    
+    const result = createResult(object1EqualsObject2(actual, expected));
+    const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
+    return check;
 };
 
+const areNotObject = (actual, expected) => {
+    return !isObject(actual) || !isObject(expected);
+};
 
-const createCheckResult = (actual, expected, checkType) => ({
-    result: '', 
-    actual: (typeof actual === 'object' ? JSON.stringify(actual) : actual), 
-    expected: (typeof expected === 'object' ? JSON.stringify(expected) : expected),
+const createCheck = (result, actual, expected, checkType) => ({
+    result: result, 
+    actual: (isObject(actual) ? JSON.stringify(actual) : actual), 
+    expected: (isObject(expected) ? JSON.stringify(expected) : expected),
     checkType: checkType
 });
+
+const createResult = (expression) => {
+    return expression ? 'passed' : 'failed';
+};
 
 // by Maiara Lange https://pt.stackoverflow.com/a/291536/81474
 const object1EqualsObject2 = (object1, object2) => {
@@ -192,8 +234,10 @@ const isObject = (val) => {
 };
 
 export {
+    FIX,
+    CREATE_FIXTURE,
     TEST,
-    TEST_F,
+    UNIT,
     CREATE_MOCK,
     CHECK_ACTUAL_EQUAL_EXPECTED,
     CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
