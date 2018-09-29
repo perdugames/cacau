@@ -32,5 +32,5 @@ An example test that has failed:
 
 ***Note:*** 
 
-*The "TEST" in the import of the files object1EqualsObject2_test.js and composeobject_test.js are alias for this same directory within my project, in a Webpack configuration. If you prefer can only reference "./testapi" if you are not using the same alias in the Webpack.*
+*The "TEST" in the import of the files **object1EqualsObject2_test.js** and **composeobject_test.js** are alias for this same directory within my project, in a Webpack configuration. If you prefer can only reference "./testapi" if you are not using the same alias in the Webpack.*
 
