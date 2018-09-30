@@ -16,7 +16,7 @@ const TEST = (fileName, ...testFunctions) => {
     const tStart = performance.now();
     
     for (let test of testFunctions)
-        test.result === 'passed' ? passing.push(test) : failing.push(test);
+        test.result === true ? passing.push(test) : failing.push(test);
     
     const tEnd = performance.now();
     const duration = tEnd - tStart;
@@ -123,7 +123,7 @@ const CheckTypes = {
 };
 
 const CHECK_ACTUAL_EQUAL_EXPECTED = (actual, expected) => {
-    const result = createResult((actual === expected));
+    const result = (actual === expected);
     const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
     return check;
 };
@@ -132,13 +132,13 @@ const CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT = (actual, expected) => {
     if (areNotObject(actual, expected))
         return createCheck('failed', actual, expected, CheckTypes.EQUAL);
     
-    const result = createResult(object1EqualsObject2(actual, expected));
+    const result = object1EqualsObject2(actual, expected);
     const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
     return check;
 };
 
 const CHECK_ACTUAL_DIFFERENT_EXPECTED = (actual, expected) => {
-    const result = createResult((actual !== expected));
+    const result = (actual !== expected);
     const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
     return check;
 };
@@ -147,7 +147,7 @@ const CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT = (actual, expected) => {
     if (areNotObject(actual, expected))
         return createCheck('failed', actual, expected, CheckTypes.NOT_EQUAL);
     
-    const result = createResult(object1EqualsObject2(actual, expected));
+    const result = object1EqualsObject2(actual, expected);
     const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
     return check;
 };
@@ -162,10 +162,6 @@ const createCheck = (result, actual, expected, checkType) => ({
     expected: (isObject(expected) ? JSON.stringify(expected) : expected),
     checkType: checkType
 });
-
-const createResult = (expression) => {
-    return expression ? 'passed' : 'failed';
-};
 
 // by Maiara Lange https://pt.stackoverflow.com/a/291536/81474
 const object1EqualsObject2 = (object1, object2) => {
