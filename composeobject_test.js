@@ -1,8 +1,8 @@
-import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED, CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT} from 'TESTS/testapi';
-import {composeObject} from 'TESTS/testapi';
+import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED, CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT} from 'TESTS/cacau';
+import {composeObject} from 'TESTS/cacau';
 
 
- TEST('/testapi.js:composeObject()',
+ TEST('/cacau.js:composeObject()',
       
     TEST_F('testComposeObject', () => {
         const obj1 = { x: 0, y: 0, other: { x: 0, y: 0 } };
