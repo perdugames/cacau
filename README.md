@@ -37,23 +37,23 @@ An example test that has failed:
 
 ## API
 
-Object FIX
+Object **FIX**
 
-function CREATE_FIXTURE(function)
+function **CREATE_FIXTURE(function)**
 
-function TEST(fileName, function)
+function **TEST(fileName, function)**
 
-function TEST_F(fileName, function)
+function **TEST_F(fileName, function)**
 
-function CREATE_MOCK(object)
+function **CREATE_MOCK(object)**
 
-function CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)
+function **CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)**
 
-function CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT(actual, expected)
+function **CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT(actual, expected)**
 
-function CHECK_ACTUAL_DIFFERENT_EXPECTED(actual, expected)
+function **CHECK_ACTUAL_DIFFERENT_EXPECTED(actual, expected)**
 
-function CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT(actual, expected)
+function **CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT(actual, expected)**
 
 ***Note:*** 
 
