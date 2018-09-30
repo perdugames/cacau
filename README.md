@@ -35,6 +35,18 @@ An example test that has failed:
 
 ![cacau](img_example_failed.png)
 
+## API
+
+Object FIX
+function CREATE_FIXTURE(function)
+function TEST(fileName, function)
+function TEST_F(fileName, function)
+function CREATE_MOCK(object)
+function CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)
+function CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT(actual, expected)
+function CHECK_ACTUAL_DIFFERENT_EXPECTED(actual, expected)
+function CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT(actual, expected)
+
 ***Note:*** 
 
 *The "TEST" in the import of the files **object1EqualsObject2_test.js** and **composeobject_test.js** are alias for this same directory within my project, in a Webpack configuration. If you prefer can only reference "./testapi" if you are not using the same alias in the Webpack.*
