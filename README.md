@@ -1,7 +1,7 @@
 # Cacau
 
 <p align="center">
-  <img width="300" height="480" src="cacau_img.png">
+  <img width="300" height="480" src="img_cacau.png">
 </p>
 
 ## Test API in JavaScript(Client).
