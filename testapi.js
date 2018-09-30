@@ -130,7 +130,7 @@ const CHECK_ACTUAL_EQUAL_EXPECTED = (actual, expected) => {
 
 const CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT = (actual, expected) => {
     if (areNotObject(actual, expected))
-        return createCheck('failed', actual, expected, CheckTypes.EQUAL);
+        return createCheck(false, actual, expected, CheckTypes.EQUAL);
     
     const result = object1EqualsObject2(actual, expected);
     const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
@@ -145,7 +145,7 @@ const CHECK_ACTUAL_DIFFERENT_EXPECTED = (actual, expected) => {
 
 const CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT = (actual, expected) => {
     if (areNotObject(actual, expected))
-        return createCheck('failed', actual, expected, CheckTypes.NOT_EQUAL);
+        return createCheck(false, actual, expected, CheckTypes.NOT_EQUAL);
     
     const result = object1EqualsObject2(actual, expected);
     const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
