@@ -1,6 +1,8 @@
 # Cacau
 
-![cacau](cacau_img.png)
+<p align="center">
+  <img width="300" height="480" src="cacau_img.png">
+</p>
 
 ## Test API in JavaScript(Client).
 
