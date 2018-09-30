@@ -27,13 +27,13 @@ Updating(F5) your browser will be able to see in the console the tests that have
 
 An example test that has passed:
 
-![cacau](img_example_passed.png)
+![cacau](parte0_06.png)
 
 
 An example test that has failed:
 
 
-![cacau](img_example_failed.png)
+![cacau](parte0_06-2.png)
 
 ## API
 
