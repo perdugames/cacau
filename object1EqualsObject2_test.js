@@ -1,8 +1,8 @@
-import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED} from 'TESTS/testapi';
-import {object1EqualsObject2} from 'TESTS/testapi';
+import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED} from 'TESTS/cacau';
+import {object1EqualsObject2} from 'TESTS/cacau';
 
 
- TEST('/testapi.js:object1EqualsObject2()',
+ TEST('/cacau.js:object1EqualsObject2()',
       
     TEST_F('testObject1EqualsObject2', () => {
         const obj1 = { x: 0, y: 0, other: { x: 0, y: 0 } };
