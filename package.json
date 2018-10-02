@@ -1,0 +1,28 @@
+{
+  "name": "cacau",
+  "version": "1.0.0",
+  "description": "Test API in JavaScript Client.",
+  "main": "cacau.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.prod.js",
+    "develop": "webpack --watch --config webpack.config.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perdugames/cacau.git"
+  },
+  "author": "perdugames",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/perdugames/cacau/issues"
+  },
+  "homepage": "https://github.com/perdugames/cacau#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8"
+  }
+}

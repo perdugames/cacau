@@ -1,5 +1,5 @@
-import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED} from 'TESTS/cacau';
-import {object1EqualsObject2} from 'TESTS/cacau';
+import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED} from 'testCacauBrowser';
+import {object1EqualsObject2} from '../../cacau';
 
 
  TEST('/cacau.js:object1EqualsObject2()',

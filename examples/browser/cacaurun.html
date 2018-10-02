@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cacau</title>
+
+</head>
+
+<body>
+    <script src="../../build/cacau.js"></script>
+    <script>
+        cacau.TEST('cacaurunPassing.html',
+                   
+            cacau.TEST_F('testCacauBrowser1', () => {
+                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
+            }),
+      
+            cacau.TEST_F('testCacauBrowser2', () => {
+                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(0, 0);
+            }),
+            
+            
+        );
+        cacau.TEST('cacaurunFailing.html',
+                   
+            cacau.TEST_F('testCacauBrowser1', () => {
+                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
+            }),
+      
+            cacau.TEST_F('testCacauBrowser2', () => {
+                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(5, 1);
+            }),
+                   
+            cacau.TEST_F('testCacauBrowser3', () => {
+                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(0, 0);
+            }),
+            
+        );
+    </script>
+
+</body>
+</html>

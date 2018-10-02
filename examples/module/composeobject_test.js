@@ -1,5 +1,5 @@
-import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED, CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT} from 'TESTS/cacau';
-import {composeObject} from 'TESTS/cacau';
+import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED, CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT} from '../build/cacau';
+import {composeObject} from '../../cacau';
 
 
  TEST('/cacau.js:composeObject()',

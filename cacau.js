@@ -1,13 +1,26 @@
 /* --------------------------------------------------------------- */
-/* ------------------- Cacau Tests ------------------------------- */
+/* ------------------- Cacau Test API ---------------------------- */
 /* --------------------------------------------------------------- */
+function createCacau() {
+    return {
+//        FIX: FIX,
+//        CREATE_FIXTURE: CREATE_FIXTURE,
+        TEST: TEST,
+        TEST_F: TEST_F,
+        CREATE_MOCK: CREATE_MOCK,
+        CHECK_ACTUAL_EQUAL_EXPECTED: CHECK_ACTUAL_EQUAL_EXPECTED,
+        CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
+        CHECK_ACTUAL_DIFFERENT_EXPECTED: CHECK_ACTUAL_DIFFERENT_EXPECTED,
+        CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT: CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT
+    };
+}
 
-let FIX = {};
-
-const CREATE_FIXTURE = (f) => {
-    FIX = f();
-    return FIX;
-};
+//let FIX = {};
+//
+//const CREATE_FIXTURE = (f) => {
+//    FIX = f();
+//    return FIX;
+//};
 
 const TEST = (fileName, ...testFunctions) => {
     const passing = [];
@@ -44,7 +57,7 @@ const createFailingText = (test) => ({
 });
 
 const createFailingIntroText = (test) => {
-    let text = 'Running unit tests in ' + test.fileName + ':\n\n'
+    let text = 'Failing in ' + test.fileName + ':\n\n'
              + 'Passing: ' + test.lenPassing + ' (' + test.duration.toFixed(2) + 'ms)\n'
              + 'Failing: ' + test.lenFailing + '\n\n';
     return text;  
@@ -227,16 +240,4 @@ const isObject = (val) => {
     return (typeof val === "object" && val !== null);
 };
 
-export {
-    FIX,
-    CREATE_FIXTURE,
-    TEST,
-    TEST_F,
-    CREATE_MOCK,
-    CHECK_ACTUAL_EQUAL_EXPECTED,
-    CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
-    CHECK_ACTUAL_DIFFERENT_EXPECTED,
-    CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT,
-    composeObject,
-    object1EqualsObject2
-};
+export default createCacau();
