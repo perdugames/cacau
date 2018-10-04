@@ -3,8 +3,6 @@
 /* --------------------------------------------------------------- */
 function createCacau() {
     return {
-//        FIX: FIX,
-//        CREATE_FIXTURE: CREATE_FIXTURE,
         TEST: TEST,
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
@@ -14,13 +12,6 @@ function createCacau() {
         CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT: CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT
     };
 }
-
-//let FIX = {};
-//
-//const CREATE_FIXTURE = (f) => {
-//    FIX = f();
-//    return FIX;
-//};
 
 const TEST = (fileName, ...testFunctions) => {
     const passing = [];
@@ -87,9 +78,9 @@ const createPassingText = (test) => ({
     color: 'color:#27AE60;' 
 });
 
-const TEST_F = (name, f) => {
+const TEST_F = (name, f, fixture) => {
     const tStart = performance.now();
-    const check = f();
+    const check = isFunction(fixture) ? f(fixture()) : f();
     const tEnd = performance.now();
     const duration = tEnd - tStart;
     
@@ -97,6 +88,8 @@ const TEST_F = (name, f) => {
     
     return details;
 };
+
+const isFunction = (val) => (typeof val === 'function');
 
 const createTestDetails = (name, duration, check) => ({
     name: name,

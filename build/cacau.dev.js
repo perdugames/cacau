@@ -117,8 +117,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* --------------------------------------------------------------- */
 function createCacau() {
     return {
-        //        FIX: FIX,
-        //        CREATE_FIXTURE: CREATE_FIXTURE,
         TEST: TEST,
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
@@ -128,13 +126,6 @@ function createCacau() {
         CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT: CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT
     };
 }
-
-//let FIX = {};
-//
-//const CREATE_FIXTURE = (f) => {
-//    FIX = f();
-//    return FIX;
-//};
 
 var TEST = function TEST(fileName) {
     for (var _len = arguments.length, testFunctions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -221,15 +212,19 @@ var createPassingText = function createPassingText(test) {
     };
 };
 
-var TEST_F = function TEST_F(name, f) {
+var TEST_F = function TEST_F(name, f, fixture) {
     var tStart = performance.now();
-    var check = f();
+    var check = isFunction(fixture) ? f(fixture()) : f();
     var tEnd = performance.now();
     var duration = tEnd - tStart;
 
     var details = createTestDetails(name, duration, check);
 
     return details;
+};
+
+var isFunction = function isFunction(val) {
+    return typeof val === 'function';
 };
 
 var createTestDetails = function createTestDetails(name, duration, check) {
