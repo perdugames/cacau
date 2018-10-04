@@ -6,59 +6,162 @@
 
 ## Test API in JavaScript(Client).
 
-### In Webpack/module:
-To call the test files, you create a file, I called it **runtests.js**, you can give the name you want, as below:
+### How to use Cacau
 
-#### runtests.js
+The code below will show you how to use the API and also explains how to
+The **TEST_F** receives as a first argument a String, and the second a function, where you must render the result of a CHECK function. May seem tricky at first, but it's quite simple. Look at the simple example below:
+
 ```javascript
-// UNITS
-import './object1EqualsObject2_test';
-import './composeobject_test';
+TEST('/myFile.js',
+      
+    TEST_F('testAplusB', () => {
+        const A = 1;
+        const B = 1;
+        const actual = plus(A, B);
+        const expected = A + B;
+        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
+    }),
+);
 ```
-And call import the "runtests.js" into your main file, as below:
 
-#### index.js
+We are checking if the "Plus()" function is acting as expected, we pass A and B to it that have a value of 1, and we expect it to return 2, we use **CHECK_ACTUAL_EQUAL_EXPECTED()** to do this verification (this function has that name because I got tired of having to check if the "current" parameter is the first or second parameter, my mind tends to dyslexia with those things, and I wasted time with it when I forgot or confused myself, so I decided change your name by informing the correct order of arguments).
+
+It is possible to write several tests for the same file, because the **TEST** function receives as a second argument, as many test functions as you want (being limited only to how many arguments JavaScript allows you to pass, I'm not sure how many, but it should be enough) , the second argument uses the spread syntax "... testFunctions", so you can add your tests, passing more test functions that we call with **TEST_F**, see below:
+
 ```javascript
-import './runtests.js';
-// ...
+TEST('/myFile.js',
+      
+    TEST_F('test1', () => {
+        // ...
+        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
+    }),
+
+    TEST_F('test2', () => {
+        // ...
+        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
+    }),
+
+    // ...
+);
 ```
-Updating(F5) your browser will be able to see in the console the tests that have passed and those that have failed.
 
-### In Browser/HTML:
+Cacau has two ways to run your tests today. The first mode is by using a custom Webpack build, and the second mode is by calling Cacau and testing directly using the HTML script tags in your "runcacau.html". I'll show you what I'm saying below:
+
+#### Running the tests using a custom Webpack configuration:
+
+We need to create a file in the root directory, called webpack.config.test.js webpack.config.test.js:
+
 ```javascript
-// ...
-<script src="../../build/cacau.js"></script>
+const path = require("path");
+
+module.exports = {
+    entry: "./tests/executetests.js",
+    output: {
+        path: path.resolve(__dirname, "engine/build/"),
+        filename: "example_test.js",
+    },
+    resolve: {
+        modules: [__dirname, "node_modules"],
+        alias: {
+          ENGINE: path.resolve(__dirname, "engine"),
+          PUBLIC: path.resolve(__dirname, "public"),
+          TESTS: path.resolve(__dirname, "tests")
+        },
+        extensions: ['.js']
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        cacheDirectory: true,
+                        presets: ["babel-preset-env"]
+                    }
+                }
+            },
+        ]
+    }
+};
+```
+
+Without fear, I will explain what he is, and what he is setting. In the webpack we can create several configuration files and call them in different compilation commands, for example, let's look at the lines below our file "package.json":
+
+```json
+"scripts": {
+        "build": "webpack --mode production --config webpack.config.js",
+        "develop": "webpack --mode development --watch --config webpack.config.dev.js"
+    },
+```
+
+Note the --config tag, with it we can call different compilation files for each npm command.
+
+Let's then create a new member in "script:" to compile our test execution file:
+
+```json
+"scripts": {
+        "build": "webpack --mode production --config webpack.config.js",
+        "develop": "webpack --mode development --watch --config webpack.config.dev.js",
+        "test": "webpack --mode development --watch --config webpack.config.test.js"
+    },
+ ```
+ 
+Now we have a new "test" member that will be called "npm run test", and it will compile our test execution file by calling our webpack configuration file "webpack.config.test.js". I kept the --watch tag to listen for the changes without having to run the "npm" command every time I need to run the tests. So any changes to the test code or implementation will be recognized by the webpack, which will re-compile and update automatically, so we just need to refresh the browser page to see what our test changes do.
+
+The input file is "./tests/executetests.js" which is our file that will import all the tests that will run. And the output file name for "example_test.js".
+
+We will now need to call this file generated by the webpack in our browser, for this we created the file "runcacau.html", follow the content of it below:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cacau</title>
+</head>
+
+<body>
+    <script src="../engine/build/example_test.js"></script>
+</body>
+</html>
+```
+
+It is a very basic .html file, where we call with the script tag a single file generated by the webpack, which is our test execution file, so just call the file "runcacau.html" in your browser and you can see the test results on your console. An example of the file "executetests.js":
+
+```javascript
+import ./unit/examplefiletest_test';
+```
+#### Running the tests using the HTML script tag:
+
+There is also another way to run the tests with Cacau, we can call it in an HTML script tag, follow the example below:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cacau</title>
+</head>
+
+<body>
+    <script src="../engine/build/maya_engine.js"></script>
+    <script src="./cacau.js"></script>
     <script>
-        cacau.TEST('cacaurunPassing.html',
-                   
-            cacau.TEST_F('testCacauBrowser1', () => {
-                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
-            }),
-      
-            cacau.TEST_F('testCacauBrowser2', () => {
-                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(0, 0);
-            }),
+        cacau.TEST("../engine/build/maya_engine.js",
             
-            
-        );
-        cacau.TEST('cacaurunFailing.html',
-                   
-            cacau.TEST_F('testCacauBrowser1', () => {
-                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
-            }),
-      
-            cacau.TEST_F('testCacauBrowser2', () => {
-                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(5, 1);
-            }),
-                   
-            cacau.TEST_F('testCacauBrowser3', () => {
-                return cacau.CHECK_ACTUAL_EQUAL_EXPECTED(0, 0);
-            }),
-            
-        );
-    </script>
-// ...
-```
+            cacau.TEST_F("testMayaEngine", () => {
+
+            const world = new MayaEngine.World();
+   
+            // ...
+```   
+     
 See the example files in the example directory of this repository for more details. 
 Then you can use Cacau also in the CommonJS/AMD/ES2015 module, as in the Browser by calling in a script HTML tag.
 
