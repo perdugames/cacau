@@ -47,6 +47,51 @@ TEST('/myFile.js',
 
 Cacau has two ways to run your tests today. The first mode is by using a custom Webpack build, and the second mode is by calling Cacau and testing directly using the HTML script tags in your "runcacau.html". I'll show you what I'm saying below:
 
+**How to use FIXTURE in Cacau:**
+
+First create a FIXTURE function (you can call it as you want it), it must return an object, you can use that object in the test functions, but be careful with the references, use FIXTURE carefully, if you need to copy an object, not pass it directly, use the **CREATE_MOCK** function to create the object safely in each test, see example:
+
+```javascript
+const FIXTURE = () => {
+    function Duckling(name) {
+        this.name = name;
+    }
+    const fix = {
+         duckling: new Duckling("Julio"),
+         pos: CREATE_MOCK({ pos: { x: 0, y: 0 } })
+    };
+    return fix;
+};
+
+TEST('testExample',
+    TEST_F('testChangeDucklingName', (FIX) => {
+        FIX.duckling.name = 'Matias'; 
+        const ducklingName = FIX.duckling.name;
+
+        return CHECK_ACTUAL_EQUAL_EXPECTED(ducklingName, 'Matias');
+    }, FIXTURE),
+
+    TEST_F('testPosIncrement', (FIX) => {
+        const expectedPos = FIX.pos.x + 1;
+        FIX.pos.x++;
+        const actualPos = FIX.pos.x;
+
+        return CHECK_ACTUAL_EQUAL_EXPECTED(actualPos, expectedPos);
+    }, FIXTURE),
+
+   TEST_F('testOnePlusOne', () => {
+        const result = 0;
+
+        const expected = result + 2;
+    
+        const result = 1 + 1;
+
+        return CHECK_ACTUAL_EQUAL_EXPECTED(result, expected);
+    })
+
+);
+```
+
 #### Running the tests using a custom Webpack configuration:
 
 We need to create a file in the root directory, called webpack.config.test.js webpack.config.test.js:
