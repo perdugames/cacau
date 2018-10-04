@@ -52,6 +52,8 @@ Cacau has two ways to run your tests today. The first mode is by using a custom 
 First create a FIXTURE function (you can call it as you want it), it must return an object, you can use that object in the test functions, but be careful with the references, use FIXTURE carefully, if you need to copy an object, not pass it directly, use the **CREATE_MOCK** function to create the object safely in each test, see example:
 
 ```javascript
+import {TEST, TEST_F, FIXTURE, CREATE_MOCK, CHECK_ACTUAL_EQUAL_EXPECTED} from './tests/cacau.js';
+
 const FIXTURE = () => {
     function Duckling(name) {
         this.name = name;
