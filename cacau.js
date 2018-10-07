@@ -111,7 +111,7 @@ const composeObject = (...objs) => {
     return composedObject;
 };
 
-// By @tfmontague https://stackoverflow.com/a/25921504/8211088
+// Modified by perdugames, based on @tfmontague https://stackoverflow.com/a/25921504/8211088
 const assignDeepEnumerablesToOut = (obj, out) => {
     const props = Object.keys(obj);
     let key, v, o;
@@ -169,7 +169,7 @@ const createCheck = (result, actual, expected, checkType) => ({
     checkType: checkType
 });
 
-// by Maiara Lange https://pt.stackoverflow.com/a/291536/81474
+// Modified by perdugames, based on @MaiaraLange https://pt.stackoverflow.com/a/291536/81474
 const object1EqualsObject2 = (object1, object2) => {
     let prop1, prop2, lenProp1, lenProp2;
     
