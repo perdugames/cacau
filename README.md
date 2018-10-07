@@ -204,6 +204,7 @@ There is also another way to run the tests with Cacau, we can call it in an HTML
                 return CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
             })
         );
+    </script>
 ```   
      
 See the example files in the example directory of this repository for more details. 
