@@ -4,6 +4,7 @@
 function createCacau() {
     return {
         TEST: TEST,
+        TEST_ASYNC: TEST_ASYNC,
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
         CHECK_ACTUAL_EQUAL_EXPECTED: CHECK_ACTUAL_EQUAL_EXPECTED,
@@ -40,6 +41,36 @@ const TEST = (fileName, ...testFunctions) => {
     const result = lenFailing > 0 ? createFailingText(test) : createPassingText(test);
     
     console.log('%c'+result.text, result.color);  
+};
+
+const TEST_ASYNC = (name, f) => {
+    const tStart = performance.now();
+    f((check) => {
+        const passing = [];
+        const failing = [];
+        const tEnd = performance.now();
+        const duration = tEnd - tStart;
+
+        const details = createTestDetails(name, duration, check);
+
+        details.result === true ? passing.push(details) : failing.push(details);
+        
+        const lenPassing = passing.length;
+        const lenFailing = failing.length;
+        
+        const test = {
+            fileName: name,
+            duration: duration,
+            passing: passing,
+            failing: failing,
+            lenPassing: lenPassing, 
+            lenFailing: lenFailing
+        };
+    
+        const result = lenFailing > 0 ? createFailingText(test) : createPassingText(test);
+    
+        console.log('%c'+result.text, result.color);  
+    });
 };
 
 const createFailingText = (test) => ({

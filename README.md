@@ -94,6 +94,36 @@ TEST('testExample',
 );
 ```
 
+**How to test async code in Cacau:**
+
+Note that this mode is not compatible with FIXTURE. Because only one invocation test of TEST_ASYNC is possible. See below:
+
+```javascript
+const imageDownload = (path, successCallback) => {
+    let img = new Image();
+    img.addEventListener("load", successCallback, false);
+    img.src = path;
+    return img;
+};
+
+TEST_ASYNC("TestAsyncFunctionTest", (done) => {
+    let spyCountSuccess = 0;
+    const expectedCountSuccess = spyCountSuccess + 1;
+
+    const successCallback = () => {
+        spyCountSuccess++;
+
+        const actualCountSuccess = spyCountSuccess;
+
+        const result = CHECK_ACTUAL_EQUAL_EXPECTED(actualCountSuccess, expectedCountSuccess);
+        done(result);
+    };
+
+    const pathImage = 'https://i.imgur.com/Wutekcp.jpg'; // or '../images/img_cacau.png';
+    const img = imageDownload(pathImage, successCallback);
+
+});
+```
 #### Running the tests using a custom Webpack configuration:
 
 We need to create a file in the root directory, called webpack.config.test.js webpack.config.test.js:
@@ -219,9 +249,11 @@ An example test that has passed and failed:
 
 ## API
 
-function **TEST(fileName, function)**
+function **TEST(fileName, ...functions)**
 
-function **TEST_F(fileName, function)**
+function **TEST_ASYNC(fileName, function)**
+
+function **TEST_F(fileName, function, fixture<optional>)**
 
 function **CREATE_MOCK(object)**
 
