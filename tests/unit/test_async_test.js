@@ -20,7 +20,7 @@ TEST_ASYNC("TestAsyncFunctionTest", (done) => {
         done(result);
     };
 
-    const pathImage = 'https://i.imgur.com/Wutekcp.jpg'; // or '../images/img_cacau.png';
+    const pathImage = 'https://raw.githubusercontent.com/perdugames/cacau/master/images/img_cacau.png'; // or '../images/img_cacau.png';
     const img = imageDownload(pathImage, successCallback);
 
 });

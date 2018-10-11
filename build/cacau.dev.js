@@ -118,8 +118,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 function createCacau() {
     return {
         TEST: TEST,
+        TEST_ASYNC: TEST_ASYNC,
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
+        CHECK_TRUE: CHECK_TRUE,
+        CHECK_FALSE: CHECK_FALSE,
+        CHECK_UNDEFINED: CHECK_UNDEFINED,
+        CHECK_NULL: CHECK_NULL,
         CHECK_ACTUAL_EQUAL_EXPECTED: CHECK_ACTUAL_EQUAL_EXPECTED,
         CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
         CHECK_ACTUAL_DIFFERENT_EXPECTED: CHECK_ACTUAL_DIFFERENT_EXPECTED,
@@ -180,6 +185,36 @@ var TEST = function TEST(fileName) {
     var result = lenFailing > 0 ? createFailingText(test) : createPassingText(test);
 
     console.log('%c' + result.text, result.color);
+};
+
+var TEST_ASYNC = function TEST_ASYNC(name, f) {
+    var tStart = performance.now();
+    f(function (check) {
+        var passing = [];
+        var failing = [];
+        var tEnd = performance.now();
+        var duration = tEnd - tStart;
+
+        var details = createTestDetails(name, duration, check);
+
+        details.result === true ? passing.push(details) : failing.push(details);
+
+        var lenPassing = passing.length;
+        var lenFailing = failing.length;
+
+        var test = {
+            fileName: name,
+            duration: duration,
+            passing: passing,
+            failing: failing,
+            lenPassing: lenPassing,
+            lenFailing: lenFailing
+        };
+
+        var result = lenFailing > 0 ? createFailingText(test) : createPassingText(test);
+
+        console.log('%c' + result.text, result.color);
+    });
 };
 
 var createFailingText = function createFailingText(test) {
@@ -277,7 +312,7 @@ var composeObject = function composeObject() {
     return composedObject;
 };
 
-// By @tfmontague https://stackoverflow.com/a/25921504/8211088
+// Modified by perdugames, based on @tfmontague https://stackoverflow.com/a/25921504/8211088
 var assignDeepEnumerablesToOut = function assignDeepEnumerablesToOut(obj, out) {
     var props = Object.keys(obj);
     var key = void 0,
@@ -294,6 +329,30 @@ var assignDeepEnumerablesToOut = function assignDeepEnumerablesToOut(obj, out) {
 var CheckTypes = {
     EQUAL: '===',
     NOT_EQUAL: '!=='
+};
+
+var CHECK_TRUE = function CHECK_TRUE(value) {
+    var result = value === true;
+    var check = createCheck(result, value, true, CheckTypes.EQUAL);
+    return check;
+};
+
+var CHECK_FALSE = function CHECK_FALSE(value) {
+    var result = value === false;
+    var check = createCheck(result, value, false, CheckTypes.EQUAL);
+    return check;
+};
+
+var CHECK_UNDEFINED = function CHECK_UNDEFINED(value) {
+    var result = value === undefined;
+    var check = createCheck(result, value, undefined, CheckTypes.EQUAL);
+    return check;
+};
+
+var CHECK_NULL = function CHECK_NULL(value) {
+    var result = value === null;
+    var check = createCheck(result, value, null, CheckTypes.EQUAL);
+    return check;
 };
 
 var CHECK_ACTUAL_EQUAL_EXPECTED = function CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected) {
@@ -337,7 +396,7 @@ var createCheck = function createCheck(result, actual, expected, checkType) {
     };
 };
 
-// by Maiara Lange https://pt.stackoverflow.com/a/291536/81474
+// Modified by perdugames, based on @MaiaraLange https://pt.stackoverflow.com/a/291536/81474
 var object1EqualsObject2 = function object1EqualsObject2(object1, object2) {
     var prop1 = void 0,
         prop2 = void 0,

@@ -257,6 +257,14 @@ function **TEST_F(fileName, function, fixture<optional>)**
 
 function **CREATE_MOCK(object)**
 
+function **CHECK_TRUE(value)**
+
+function **CHECK_FALSE(value)**
+
+function **CHECK_UNDEFINED(value)**
+
+function **CHECK_NULL(value)**
+
 function **CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)**
 
 function **CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT(actual, expected)**

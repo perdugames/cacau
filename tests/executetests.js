@@ -1,6 +1,7 @@
 /* META-TESTS */
 
 // UNIT
-import './unit/fix_returnobjectimutable_test.js';
-import './unit/fix_undefinedandnull_test.js';
-import './unit/test_async_test.js';
+import './unit/fix_returnobjectimutable_test';
+import './unit/fix_undefinedandnull_test';
+import './unit/test_async_test';
+import './unit/checks_test';
