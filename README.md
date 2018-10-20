@@ -259,11 +259,19 @@ function **CREATE_MOCK(object)**
 
 function **CHECK_TRUE(value)**
 
+function **CHECK_NOT_TRUE(value)**
+
 function **CHECK_FALSE(value)**
+
+function **CHECK_NOT_FALSE(value)**
 
 function **CHECK_UNDEFINED(value)**
 
+function **CHECK_NOT_UNDEFINED(value)**
+
 function **CHECK_NULL(value)**
+
+function **CHECK_NOT_NULL(value)**
 
 function **CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)**
 

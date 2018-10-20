@@ -8,9 +8,13 @@ function createCacau() {
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
         CHECK_TRUE: CHECK_TRUE,
+        CHECK_NOT_TRUE: CHECK_NOT_TRUE,
         CHECK_FALSE: CHECK_FALSE,
+        CHECK_NOT_FALSE: CHECK_NOT_FALSE,
         CHECK_UNDEFINED: CHECK_UNDEFINED,
+        CHECK_NOT_UNDEFINED: CHECK_NOT_UNDEFINED,
         CHECK_NULL: CHECK_NULL,
+        CHECK_NOT_NULL: CHECK_NOT_NULL,
         CHECK_ACTUAL_EQUAL_EXPECTED: CHECK_ACTUAL_EQUAL_EXPECTED,
         CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
         CHECK_ACTUAL_DIFFERENT_EXPECTED: CHECK_ACTUAL_DIFFERENT_EXPECTED,
@@ -169,8 +173,20 @@ const CHECK_TRUE = (value) => {
     return check;
 };
 
+const CHECK_NOT_TRUE = (value) => {
+    const result = (value !== true);
+    const check = createCheck(result, value, true, CheckTypes.EQUAL);
+    return check;
+};
+
 const CHECK_FALSE = (value) => {
     const result = (value === false);
+    const check = createCheck(result, value, false, CheckTypes.EQUAL);
+    return check;
+};
+
+const CHECK_NOT_FALSE = (value) => {
+    const result = (value !== false);
     const check = createCheck(result, value, false, CheckTypes.EQUAL);
     return check;
 };
@@ -181,8 +197,20 @@ const CHECK_UNDEFINED = (value) => {
     return check;
 };
 
+const CHECK_NOT_UNDEFINED = (value) => {
+    const result = (value !== undefined);
+    const check = createCheck(result, value, undefined, CheckTypes.EQUAL);
+    return check;
+};
+
 const CHECK_NULL = (value) => {
     const result = (value === null);
+    const check = createCheck(result, value, null, CheckTypes.EQUAL);
+    return check;
+};
+
+const CHECK_NOT_NULL = (value) => {
+    const result = (value !== null);
     const check = createCheck(result, value, null, CheckTypes.EQUAL);
     return check;
 };
