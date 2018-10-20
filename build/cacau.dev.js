@@ -122,9 +122,13 @@ function createCacau() {
         TEST_F: TEST_F,
         CREATE_MOCK: CREATE_MOCK,
         CHECK_TRUE: CHECK_TRUE,
+        CHECK_NOT_TRUE: CHECK_NOT_TRUE,
         CHECK_FALSE: CHECK_FALSE,
+        CHECK_NOT_FALSE: CHECK_NOT_FALSE,
         CHECK_UNDEFINED: CHECK_UNDEFINED,
+        CHECK_NOT_UNDEFINED: CHECK_NOT_UNDEFINED,
         CHECK_NULL: CHECK_NULL,
+        CHECK_NOT_NULL: CHECK_NOT_NULL,
         CHECK_ACTUAL_EQUAL_EXPECTED: CHECK_ACTUAL_EQUAL_EXPECTED,
         CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT,
         CHECK_ACTUAL_DIFFERENT_EXPECTED: CHECK_ACTUAL_DIFFERENT_EXPECTED,
@@ -337,9 +341,21 @@ var CHECK_TRUE = function CHECK_TRUE(value) {
     return check;
 };
 
+var CHECK_NOT_TRUE = function CHECK_NOT_TRUE(value) {
+    var result = value !== true;
+    var check = createCheck(result, value, !true, CheckTypes.NOT_EQUAL);
+    return check;
+};
+
 var CHECK_FALSE = function CHECK_FALSE(value) {
     var result = value === false;
     var check = createCheck(result, value, false, CheckTypes.EQUAL);
+    return check;
+};
+
+var CHECK_NOT_FALSE = function CHECK_NOT_FALSE(value) {
+    var result = value !== false;
+    var check = createCheck(result, value, !false, CheckTypes.NOT_EQUAL);
     return check;
 };
 
@@ -349,9 +365,21 @@ var CHECK_UNDEFINED = function CHECK_UNDEFINED(value) {
     return check;
 };
 
+var CHECK_NOT_UNDEFINED = function CHECK_NOT_UNDEFINED(value) {
+    var result = value !== undefined;
+    var check = createCheck(result, value, !undefined, CheckTypes.NOT_EQUAL);
+    return check;
+};
+
 var CHECK_NULL = function CHECK_NULL(value) {
     var result = value === null;
     var check = createCheck(result, value, null, CheckTypes.EQUAL);
+    return check;
+};
+
+var CHECK_NOT_NULL = function CHECK_NOT_NULL(value) {
+    var result = value !== null;
+    var check = createCheck(result, value, !null, CheckTypes.NOT_EQUAL);
     return check;
 };
 

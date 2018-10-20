@@ -175,7 +175,7 @@ const CHECK_TRUE = (value) => {
 
 const CHECK_NOT_TRUE = (value) => {
     const result = (value !== true);
-    const check = createCheck(result, value, true, CheckTypes.EQUAL);
+    const check = createCheck(result, value, !true, CheckTypes.NOT_EQUAL);
     return check;
 };
 
@@ -187,7 +187,7 @@ const CHECK_FALSE = (value) => {
 
 const CHECK_NOT_FALSE = (value) => {
     const result = (value !== false);
-    const check = createCheck(result, value, false, CheckTypes.EQUAL);
+    const check = createCheck(result, value, !false, CheckTypes.NOT_EQUAL);
     return check;
 };
 
@@ -199,7 +199,7 @@ const CHECK_UNDEFINED = (value) => {
 
 const CHECK_NOT_UNDEFINED = (value) => {
     const result = (value !== undefined);
-    const check = createCheck(result, value, undefined, CheckTypes.EQUAL);
+    const check = createCheck(result, value, !undefined, CheckTypes.NOT_EQUAL);
     return check;
 };
 
@@ -211,7 +211,7 @@ const CHECK_NULL = (value) => {
 
 const CHECK_NOT_NULL = (value) => {
     const result = (value !== null);
-    const check = createCheck(result, value, null, CheckTypes.EQUAL);
+    const check = createCheck(result, value, !null, CheckTypes.NOT_EQUAL);
     return check;
 };
 
