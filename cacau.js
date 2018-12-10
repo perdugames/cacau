@@ -154,7 +154,7 @@ const composeObject = (...objs) => {
 const assignDeepEnumerablesToOut = (obj, out) => {
     const props = Object.keys(obj);
     let key, v, o;
-    for (let i = 0; i < props.length; i++) {
+    for(let i = 0; i < props.length; i++) {
         key = props[i];
         v = obj[key];
         isObject(out[key]) ? out[key] = out[key] : out[key] = {};
@@ -221,18 +221,18 @@ const CHECK_ACTUAL_EQUAL_EXPECTED = (actual, expected) => {
     return check;
 };
 
+const CHECK_ACTUAL_DIFFERENT_EXPECTED = (actual, expected) => {
+    const result = (actual !== expected);
+    const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
+    return check;
+};
+
 const CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT = (actual, expected) => {
     if (areNotObject(actual, expected))
         return createCheck(false, actual, expected, CheckTypes.EQUAL);
     
     const result = object1EqualsObject2(actual, expected);
     const check = createCheck(result, actual, expected, CheckTypes.EQUAL);
-    return check;
-};
-
-const CHECK_ACTUAL_DIFFERENT_EXPECTED = (actual, expected) => {
-    const result = (actual !== expected);
-    const check = createCheck(result, actual, expected, CheckTypes.NOT_EQUAL);
     return check;
 };
 
@@ -266,7 +266,7 @@ const object1EqualsObject2 = (object1, object2) => {
     if (typeof object1 !== typeof object2)
         return false;
     
-    if (typeof object1 === "function")
+    if (typeof object1 === 'function')
         return (object1.toString() !== object2.toString() ? false : true);
 
     if (isObject(object1)) {
@@ -313,11 +313,11 @@ const areEmptyAndTypeEquals = (obj1, obj2) => {
 };
 
 const isNullOrUndefined = (val) => {
-    return (typeof val === "undefined" || val === null);
+    return (typeof val === 'undefined' || val === null);
 };
 
 const isObject = (val) => {
-    return (typeof val === "object" && val !== null);
+    return (typeof val === 'object' && val !== null);
 };
 
 export default createCacau();

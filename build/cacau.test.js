@@ -86,6 +86,90 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./assert/algorithms/algorithms.js":
+/*!*****************************************!*\
+  !*** ./assert/algorithms/algorithms.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _deep_equals = __webpack_require__(/*! ./deep_equals */ \"./assert/algorithms/deep_equals.js\");\n\nvar _deep_equals2 = _interopRequireDefault(_deep_equals);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar Algorithms = {\n    deepEquals: _deep_equals2.default\n};\n\nexports.default = Algorithms;\n\n//# sourceURL=webpack:///./assert/algorithms/algorithms.js?");
+
+/***/ }),
+
+/***/ "./assert/algorithms/deep_equals.js":
+/*!******************************************!*\
+  !*** ./assert/algorithms/deep_equals.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar deepEquals = function deepEquals(object1, object2) {\n    if (!isObject(object1) && !isObject(object2)) return object1 === object2;\n\n    if (!isObject(object1) || !isObject(object2)) return false;\n\n    return object1EqualsObject2(object1, object2);\n};\n\n// Modified by perdugames, based on @MaiaraLange https://pt.stackoverflow.com/a/291536/81474\nvar object1EqualsObject2 = function object1EqualsObject2(object1, object2) {\n    var prop1 = void 0,\n        prop2 = void 0,\n        lenProp1 = void 0,\n        lenProp2 = void 0;\n\n    if (isNullOrUndefined(object1) || isNullOrUndefined(object2)) return false;\n\n    if ((typeof object1 === 'undefined' ? 'undefined' : _typeof(object1)) !== (typeof object2 === 'undefined' ? 'undefined' : _typeof(object2))) return false;\n\n    if (typeof object1 === 'function') return object1.toString() !== object2.toString() ? false : true;\n\n    if (isObject(object1)) {\n        prop1 = Object.keys(object1);\n        prop2 = Object.keys(object2);\n        lenProp1 = prop1.length;\n        lenProp2 = prop2.length;\n    } else {\n        lenProp1 = 0;\n        lenProp2 = 0;\n    }\n\n    if (lenProp1 !== lenProp2) return false;\n\n    if (lenProp1 === 0) {\n        if (object1 === object2 || areEmptyAndTypeEquals(object1, object2)) return true;else return false;\n    }\n\n    for (var i = 0; i < lenProp1; i++) {\n        var prop = prop1[i];\n\n        if (object1[prop] !== object2[prop]) if (object1EqualsObject2(object1[prop], object2[prop])) continue;else return false;\n    }\n    return true;\n};\n\nvar areEmptyAndTypeEquals = function areEmptyAndTypeEquals(obj1, obj2) {\n    var areArrays = Array.isArray(obj1) && Array.isArray(obj2);\n    var areObjects = isObject(obj1) && isObject(obj2);\n\n    if (!areArrays && (Array.isArray(obj1) || Array.isArray(obj2))) return false;\n\n    return areArrays || areObjects ? true : false;\n};\n\nvar isNullOrUndefined = function isNullOrUndefined(val) {\n    return typeof val === 'undefined' || val === null;\n};\n\nvar isObject = function isObject(val) {\n    return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null;\n};\n\nexports.default = deepEquals;\n\n//# sourceURL=webpack:///./assert/algorithms/deep_equals.js?");
+
+/***/ }),
+
+/***/ "./assert/assert.js":
+/*!**************************!*\
+  !*** ./assert/assert.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _assertion = __webpack_require__(/*! ./assertion */ \"./assert/assertion.js\");\n\nvar _assertion2 = _interopRequireDefault(_assertion);\n\nvar _operators = __webpack_require__(/*! ./operators */ \"./assert/operators.js\");\n\nvar _operators2 = _interopRequireDefault(_operators);\n\nvar _expressions = __webpack_require__(/*! ./expressions */ \"./assert/expressions.js\");\n\nvar _expressions2 = _interopRequireDefault(_expressions);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction Assert() {}\n\nAssert.prototype.isTrue = function (actual) {\n    new _assertion2.default(actual, true, _expressions2.default.IS_TRUE, _operators2.default.EQUAL);\n};\n\nAssert.prototype.isNotTrue = function (actual) {\n    new _assertion2.default(actual, !true, _expressions2.default.IS_NOT_TRUE, _operators2.default.NOT_EQUAL);\n};\n\nAssert.prototype.isFalse = function (actual) {\n    new _assertion2.default(actual, false, _expressions2.default.IS_FALSE, _operators2.default.EQUAL);\n};\n\nAssert.prototype.isNotFalse = function (actual) {\n    new _assertion2.default(actual, !false, _expressions2.default.IS_NOT_FALSE, _operators2.default.NOT_EQUAL);\n};\n\nAssert.prototype.isUndefined = function (actual) {\n    new _assertion2.default(actual, undefined, _expressions2.default.IS_UNDEFINED, _operators2.default.EQUAL);\n};\n\nAssert.prototype.isNotUndefined = function (actual) {\n    new _assertion2.default(actual, !undefined, _expressions2.default.IS_NOT_UNDEFINED, _operators2.default.NOT_EQUAL);\n};\n\nAssert.prototype.isNull = function (actual) {\n    new _assertion2.default(actual, null, _expressions2.default.IS_NULL, _operators2.default.EQUAL);\n};\n\nAssert.prototype.isNotNull = function (actual) {\n    new _assertion2.default(actual, !null, _expressions2.default.IS_NOT_NULL, _operators2.default.NOT_EQUAL);\n};\n\nAssert.prototype.actualEqualExpected = function (actual, expected) {\n    new _assertion2.default(actual, expected, _expressions2.default.ACTUAL_EQUAL_EXPECTED, _operators2.default.EQUAL);\n};\n\nAssert.prototype.actualNotEqualExpected = function (actual, expected) {\n    new _assertion2.default(actual, expected, _expressions2.default.ACTUAL_NOT_EQUAL_EXPECTED, _operators2.default.NOT_EQUAL);\n};\n\nAssert.prototype.actualDeepEqualExpected = function (actual, expected) {\n    new _assertion2.default(actual, expected, _expressions2.default.ACTUAL_DEEP_EQUAL_EXPECTED, _operators2.default.EQUAL);\n};\n\nexports.default = Assert;\n\n//# sourceURL=webpack:///./assert/assert.js?");
+
+/***/ }),
+
+/***/ "./assert/assertion.js":
+/*!*****************************!*\
+  !*** ./assert/assertion.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _assertion_error = __webpack_require__(/*! ./assertion_error */ \"./assert/assertion_error.js\");\n\nvar _assertion_error2 = _interopRequireDefault(_assertion_error);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction Assertion(actual, expected, expression, operator) {\n    this.assert(actual, expected, expression, operator);\n}\n\nAssertion.prototype.assert = function (actual, expected, expression, operator) {\n    var result = expression(actual, expected);\n\n    var props = {\n        actual: actual,\n        expected: expected,\n        result: result,\n        operator: operator\n    };\n\n    var message = 'actual: ' + actual + ' ' + operator + ' expected: ' + expected;\n\n    if (!result) throw new _assertion_error2.default(message, props);\n};\n\nexports.default = Assertion;\n\n//# sourceURL=webpack:///./assert/assertion.js?");
+
+/***/ }),
+
+/***/ "./assert/assertion_error.js":
+/*!***********************************!*\
+  !*** ./assert/assertion_error.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nfunction AssertionError(message, props, startStackConstructor) {\n    this.message = message || 'AssertionError message not specified';\n    props = props || {};\n\n    assignDeepEnumerablesToOut(props, this);\n\n    startStackConstructor = startStackConstructor || AssertionError;\n    if (Error.captureStackTrace) Error.captureStackTrace(this, startStackConstructor);else try {\n        throw new Error();\n    } catch (e) {\n        this.stack = e.stack;\n    }\n}\n\nAssertionError.prototype = Object.create(Error.prototype);\n\nAssertionError.prototype.constructor = AssertionError;\n\nAssertionError.prototype.name = 'AssertionError';\n\nvar assignDeepEnumerablesToOut = function assignDeepEnumerablesToOut(obj, out) {\n    var props = Object.keys(obj);\n    var key = void 0,\n        v = void 0,\n        o = void 0;\n    for (var i = 0; i < props.length; i++) {\n        key = props[i];\n        v = obj[key];\n        out[key] = isObject(out[key]) ? out[key] : {};\n        isObject(v) ? assignDeepEnumerablesToOut(v, out[key]) : out[key] = v;\n    }\n};\n\nvar isObject = function isObject(val) {\n    return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null;\n};\n\nexports.default = AssertionError;\n\n//# sourceURL=webpack:///./assert/assertion_error.js?");
+
+/***/ }),
+
+/***/ "./assert/expressions.js":
+/*!*******************************!*\
+  !*** ./assert/expressions.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _algorithms = __webpack_require__(/*! ./algorithms/algorithms */ \"./assert/algorithms/algorithms.js\");\n\nvar _algorithms2 = _interopRequireDefault(_algorithms);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar Expressions = {\n\n    IS_TRUE: function IS_TRUE(actual) {\n        return actual === true;\n    },\n\n    IS_NOT_TRUE: function IS_NOT_TRUE(actual) {\n        return actual !== true;\n    },\n\n    IS_FALSE: function IS_FALSE(actual) {\n        return value === false;\n    },\n\n    IS_NOT_FALSE: function IS_NOT_FALSE(actual) {\n        return value !== false;\n    },\n\n    IS_UNDEFINED: function IS_UNDEFINED(actual) {\n        return value === undefined;\n    },\n\n    IS_NOT_UNDEFINED: function IS_NOT_UNDEFINED(actual) {\n        return value !== undefined;\n    },\n\n    IS_NULL: function IS_NULL(actual) {\n        return value === null;\n    },\n\n    IS_NOT_NULL: function IS_NOT_NULL(actual) {\n        return value !== null;\n    },\n\n    ACTUAL_EQUAL_EXPECTED: function ACTUAL_EQUAL_EXPECTED(actual, expected) {\n        return actual === expected;\n    },\n\n    ACTUAL_NOT_EQUAL_EXPECTED: function ACTUAL_NOT_EQUAL_EXPECTED(actual, expected) {\n        return actual !== expected;\n    },\n\n    ACTUAL_DEEP_EQUAL_EXPECTED: function ACTUAL_DEEP_EQUAL_EXPECTED(actual, expected) {\n        return _algorithms2.default.deepEquals(actual, expected);\n    }\n\n};\n\nexports.default = Expressions;\n\n//# sourceURL=webpack:///./assert/expressions.js?");
+
+/***/ }),
+
+/***/ "./assert/operators.js":
+/*!*****************************!*\
+  !*** ./assert/operators.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nvar Operators = {\n    EQUAL: '===',\n    NOT_EQUAL: '!=='\n};\n\nexports.default = Operators;\n\n//# sourceURL=webpack:///./assert/operators.js?");
+
+/***/ }),
+
 /***/ "./build/cacau.js":
 /*!************************!*\
   !*** ./build/cacau.js ***!
@@ -117,7 +201,19 @@ eval("module.exports = function(module) {\r\n\tif (!module.webpackPolyfill) {\r\
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\n__webpack_require__(/*! ./unit/fix_returnobjectimutable_test */ \"./tests/unit/fix_returnobjectimutable_test.js\");\n\n__webpack_require__(/*! ./unit/fix_undefinedandnull_test */ \"./tests/unit/fix_undefinedandnull_test.js\");\n\n__webpack_require__(/*! ./unit/test_async_test */ \"./tests/unit/test_async_test.js\");\n\n__webpack_require__(/*! ./unit/checks_test */ \"./tests/unit/checks_test.js\");\n\n//# sourceURL=webpack:///./tests/executetests.js?");
+eval("\n\n__webpack_require__(/*! ./unit/fix_returnobjectimutable_test */ \"./tests/unit/fix_returnobjectimutable_test.js\");\n\n__webpack_require__(/*! ./unit/fix_undefinedandnull_test */ \"./tests/unit/fix_undefinedandnull_test.js\");\n\n__webpack_require__(/*! ./unit/test_async_test */ \"./tests/unit/test_async_test.js\");\n\n__webpack_require__(/*! ./unit/checks_test */ \"./tests/unit/checks_test.js\");\n\n__webpack_require__(/*! ./unit/assert_test */ \"./tests/unit/assert_test.js\");\n\n//# sourceURL=webpack:///./tests/executetests.js?");
+
+/***/ }),
+
+/***/ "./tests/unit/assert_test.js":
+/*!***********************************!*\
+  !*** ./tests/unit/assert_test.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _cacau = __webpack_require__(/*! BUILD/cacau.js */ \"./build/cacau.js\");\n\nvar _assert = __webpack_require__(/*! CACAU/assert/assert */ \"./assert/assert.js\");\n\nvar _assert2 = _interopRequireDefault(_assert);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar errorCapture = function errorCapture(fn) {\n    try {\n        fn();\n    } catch (e) {\n        return e;\n    }\n};\n\n(0, _cacau.TEST)('assert.js', (0, _cacau.TEST_F)('TestAssertIsTrueCheckResult', function () {\n    var assert = new _assert2.default();\n\n    var actual = true;\n    var result = assert.isTrue(actual);\n\n    return (0, _cacau.CHECK_UNDEFINED)(result);\n}), (0, _cacau.TEST_F)('TestAssertIsTrueCheckErrorObject', function () {\n    var assert = new _assert2.default();\n\n    var expected = {\n        actual: false,\n        expected: true,\n        result: false,\n        operator: '==='\n    };\n\n    var assertError = errorCapture(function () {\n        return assert.isTrue(false);\n    });\n\n    var actual = {\n        actual: assertError.actual,\n        expected: assertError.expected,\n        result: assertError.result,\n        operator: assertError.operator\n    };\n\n    return (0, _cacau.CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT)(actual, expected);\n}), (0, _cacau.TEST_F)('TestAssertIsNotTrueCheckResult', function () {\n    var assert = new _assert2.default();\n\n    var actual = !true;\n    var result = assert.isNotTrue(actual);\n\n    return (0, _cacau.CHECK_UNDEFINED)(result);\n}), (0, _cacau.TEST_F)('TestAssertActualDeepEqualExpectedCheckResult', function () {\n    var assert = new _assert2.default();\n\n    var actual = { x: 0, y: 1 };\n    var expected = { x: 0, y: 1 };\n    var result = assert.actualDeepEqualExpected(actual, expected);\n\n    return (0, _cacau.CHECK_UNDEFINED)(result);\n}));\n\n/* IDEAL */\n/*\n\nimport 'cacau.js';\n\nTEST_SUITE('Assertion.js',\n\n    FIXTURE_START(() => {\n        const valueTrue = true;\n    }),\n    \n    FIXTURE_END(() => {\n        const valueTrue = true;\n    }),\n    \n    TEST('Assert 1', () => {\n        const valueTrue = true;\n        return CHECK_TRUE(valueTrue);\n    }),\n    \n    TEST('Assert 2', () => {\n        const valueTrue = true;\n        return CHECK_TRUE(valueTrue);\n    }),\n    \n    // ...\n);\n*/\n// SUITE E TEST SÃO DO MESMO TIPO, ENTÃO SUITES PODEM CONTER OUTRAS SUITES DE TEST, PORÉM TEST É FINAL\n\n//# sourceURL=webpack:///./tests/unit/assert_test.js?");
 
 /***/ }),
 

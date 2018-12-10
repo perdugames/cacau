@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
     "develop": "webpack --watch --config webpack.config.dev.js",
-    "test": "webpack --mode development --watch --config webpack.config.test.js"
+    "test": "webpack --mode development --watch --config webpack.config.test.js",
+    "postversion": "git push --tags origin master"
   },
   "repository": {
     "type": "git",
