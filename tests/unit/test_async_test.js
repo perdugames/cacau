@@ -16,8 +16,7 @@ TEST_ASYNC("TestAsyncFunctionTest", (done) => {
 
         const actualCountSuccess = spyCountSuccess;
 
-        const result = CHECK_ACTUAL_EQUAL_EXPECTED(actualCountSuccess, expectedCountSuccess);
-        done(result);
+        done( () => CHECK_ACTUAL_EQUAL_EXPECTED(actualCountSuccess, expectedCountSuccess) );
     };
 
     const pathImage = 'https://raw.githubusercontent.com/perdugames/cacau/master/images/img_cacau.png'; // or '../images/img_cacau.png';

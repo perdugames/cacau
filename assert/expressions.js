@@ -6,17 +6,17 @@ const Expressions = {
     
     IS_NOT_TRUE: (actual) => actual !== true,
     
-    IS_FALSE: (actual) => value === false,
+    IS_FALSE: (actual) => actual === false,
     
-    IS_NOT_FALSE: (actual) => value !== false,
+    IS_NOT_FALSE: (actual) => actual !== false,
     
-    IS_UNDEFINED: (actual) => value === undefined,
+    IS_UNDEFINED: (actual) => actual === undefined,
     
-    IS_NOT_UNDEFINED: (actual) => value !== undefined,
+    IS_NOT_UNDEFINED: (actual) => actual !== undefined,
     
-    IS_NULL: (actual) => value === null,
+    IS_NULL: (actual) => actual === null,
     
-    IS_NOT_NULL: (actual) => value !== null,
+    IS_NOT_NULL: (actual) => actual !== null,
     
     ACTUAL_EQUAL_EXPECTED: (actual, expected) => actual === expected,
     
