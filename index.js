@@ -1,12 +1,15 @@
 /* --------------------------------------------------------------- */
 /* ------------------- Cacau Test API ---------------------------- */
 /* --------------------------------------------------------------- */
-import Assert from './assert/assert';
+import Assert from './lib/assert/assert';
+import Cacau from './lib/cacau';
 
 const assert = new Assert();
+const cacau = new Cacau();
 
 function createCacau() {
     return {
+        cacau: cacau,
         TEST: TEST,
         TEST_ASYNC: TEST_ASYNC,
         TEST_F: TEST_F,
@@ -24,6 +27,52 @@ function createCacau() {
         CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: assert.actualDeepEqualExpected
     };
 }
+
+
+
+const VIEW = () => {};
+const CONTROLLER = () => {};
+const SUITE = (name, ...testFunctions) => {};
+const TEST_CASE = (name, f) => {};
+
+//Cacau.prototype.addSuite = function(name, ...testFunctions) {
+//    let tests = [];
+//    for(let test of testFunctions)
+//        
+//    const suite = new Suite(testFunctions);
+//}
+//
+//Cacau.prototype.addTest = function(name, testFunction) {
+//    const test = new Test(testFunction);
+//    this.tests.push(test);
+//}
+//
+//Cacau.prototype.run = function() {
+//    for(let i = 0; i < this.tests; i++)
+//        this.tests[i].run();
+//}
+//
+//function Suite(testFunctions) {
+//    this.tests = testFunctions;
+//}
+//Suite.prototype.run = function() {
+//    START_SUITE_FIXTURE();
+//    for(let i = 0; i < this.tests; i++) {
+//        this.tests[i].run() === undefined ? passing++ : failing++;
+//    }
+//    END_SUITE_FIXTURE();   
+//}
+//
+//function Test(testFunction) {
+//    this.testFunction = testFunction;
+//}
+//Test.prototype.run = function() {
+//    START_TEST_FIXTURE();
+//    this.testFunction() === undefined ? passing++ : failing++;
+//    END_TEST_FIXTURE();
+//}
+
+/* ==================================================================== */
 
 const TEST = (fileName, ...testFunctions) => {
     const passing = [];
@@ -106,11 +155,14 @@ const TEST_F = (name, f, fixture) => {
         
         return {name: name, duration: duration, result: true};
         
-    } catch(assertionError) {
+    } catch(error) {
         tEnd = performance.now();
         duration = tEnd - tStart;
         
-        return createTestDetails(name, duration, assertionError);  
+        if(error.name === 'AssertionError')
+            return createTestDetails(name, duration, error);
+        
+        throw error;
     }
 };
 
@@ -148,13 +200,8 @@ const assignDeepEnumerablesToOut = (obj, out) => {
     }  
 };
 
-//const createCheck = (result, actual, expected, checkType) => ({
-//    result: result, 
 //    actual: (isObject(actual) ? JSON.stringify(actual) : actual), 
 //    expected: (isObject(expected) ? JSON.stringify(expected) : expected),
-//    checkType: checkType
-//});
-
 
 const isObject = (val) => {
     return (typeof val === 'object' && val !== null);

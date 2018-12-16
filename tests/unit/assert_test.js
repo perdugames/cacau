@@ -6,7 +6,7 @@ import {
     CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT
 } from 'BUILD/cacau.js';
 
-import Assert from 'CACAU/assert/assert';
+import Assert from 'LIB/assert/assert';
 
 const errorCapture = (fn) => {
     try {
@@ -69,33 +69,3 @@ TEST('assert.js',
     }),
      
 );
-
-/* IDEAL */
-/*
-
-import 'cacau.js';
-
-TEST_SUITE('Assertion.js',
-
-    FIXTURE_START(() => {
-        const valueTrue = true;
-    }),
-    
-    FIXTURE_END(() => {
-        const valueTrue = true;
-    }),
-    
-    TEST('Assert 1', () => {
-        const valueTrue = true;
-        return CHECK_TRUE(valueTrue);
-    }),
-    
-    TEST('Assert 2', () => {
-        const valueTrue = true;
-        return CHECK_TRUE(valueTrue);
-    }),
-    
-    // ...
-);
-*/
-// SUITE E TEST SÃO DO MESMO TIPO, ENTÃO SUITES PODEM CONTER OUTRAS SUITES DE TEST, PORÉM TEST É FINAL

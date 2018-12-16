@@ -10,7 +10,7 @@ module.exports = {
     resolve: {
         modules: [__dirname, "node_modules"],
         alias: {
-          CACAU: path.resolve(__dirname, ""),
+          LIB: path.resolve(__dirname, "lib/"),
           BUILD: path.resolve(__dirname, "build/")
         },
         extensions: ['.js']

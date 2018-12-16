@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
     mode: "production",
-    entry: "./cacau.js",
+    entry: "./index.js",
         output: {
         path: path.resolve(__dirname, "build/"),
         filename: "cacau.js",

@@ -7,3 +7,4 @@ import './unit/test_async_test';
 import './unit/checks_test';
 
 import './unit/assert_test';
+import './unit/runner_test';
