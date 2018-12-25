@@ -1,10 +1,4 @@
-import {
-    TEST, 
-    TEST_F, 
-    CHECK_TRUE,
-    CHECK_UNDEFINED,
-    CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT
-} from 'BUILD/cacau.js';
+require('BUILD/cacau-1.1.0.js');
 
 import Assert from 'LIB/assert/assert';
 

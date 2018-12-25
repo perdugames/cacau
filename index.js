@@ -2,14 +2,11 @@
 /* ------------------- Cacau Test API ---------------------------- */
 /* --------------------------------------------------------------- */
 import Assert from './lib/assert/assert';
-import Cacau from './lib/cacau';
 
 const assert = new Assert();
-const cacau = new Cacau();
 
 function createCacau() {
     return {
-        cacau: cacau,
         TEST: TEST,
         TEST_ASYNC: TEST_ASYNC,
         TEST_F: TEST_F,
@@ -27,52 +24,6 @@ function createCacau() {
         CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT: assert.actualDeepEqualExpected
     };
 }
-
-
-
-const VIEW = () => {};
-const CONTROLLER = () => {};
-const SUITE = (name, ...testFunctions) => {};
-const TEST_CASE = (name, f) => {};
-
-//Cacau.prototype.addSuite = function(name, ...testFunctions) {
-//    let tests = [];
-//    for(let test of testFunctions)
-//        
-//    const suite = new Suite(testFunctions);
-//}
-//
-//Cacau.prototype.addTest = function(name, testFunction) {
-//    const test = new Test(testFunction);
-//    this.tests.push(test);
-//}
-//
-//Cacau.prototype.run = function() {
-//    for(let i = 0; i < this.tests; i++)
-//        this.tests[i].run();
-//}
-//
-//function Suite(testFunctions) {
-//    this.tests = testFunctions;
-//}
-//Suite.prototype.run = function() {
-//    START_SUITE_FIXTURE();
-//    for(let i = 0; i < this.tests; i++) {
-//        this.tests[i].run() === undefined ? passing++ : failing++;
-//    }
-//    END_SUITE_FIXTURE();   
-//}
-//
-//function Test(testFunction) {
-//    this.testFunction = testFunction;
-//}
-//Test.prototype.run = function() {
-//    START_TEST_FIXTURE();
-//    this.testFunction() === undefined ? passing++ : failing++;
-//    END_TEST_FIXTURE();
-//}
-
-/* ==================================================================== */
 
 const TEST = (fileName, ...testFunctions) => {
     const passing = [];
@@ -200,11 +151,26 @@ const assignDeepEnumerablesToOut = (obj, out) => {
     }  
 };
 
-//    actual: (isObject(actual) ? JSON.stringify(actual) : actual), 
-//    expected: (isObject(expected) ? JSON.stringify(expected) : expected),
-
 const isObject = (val) => {
     return (typeof val === 'object' && val !== null);
 };
 
-export default createCacau();
+global.TEST = TEST;
+global.TEST_ASYNC = TEST_ASYNC;
+global.TEST_F = TEST_F;
+global.CREATE_MOCK = CREATE_MOCK;
+global.CHECK_TRUE = assert.isTrue;
+global.CHECK_NOT_TRUE = assert.isNotTrue;
+global.CHECK_FALSE = assert.isFalse;
+global.CHECK_NOT_FALSE = assert.isNotFalse;
+global.CHECK_UNDEFINED = assert.isUndefined;
+global.CHECK_NOT_UNDEFINED = assert.isNotUndefined;
+global.CHECK_NULL = assert.isNull;
+global.CHECK_NOT_NULL = assert.isNotNull;
+global.CHECK_ACTUAL_EQUAL_EXPECTED = assert.actualEqualExpected;
+global.CHECK_ACTUAL_DIFFERENT_EXPECTED = assert.actualNotEqualExpected;
+global.CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT = assert.actualDeepEqualExpected;
+
+global.cacau = createCacau();
+
+module.exports = global;

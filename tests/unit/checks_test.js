@@ -1,16 +1,4 @@
-import {
-    TEST, 
-    TEST_F, 
-    CHECK_TRUE, 
-    CHECK_NOT_TRUE, 
-    CHECK_FALSE,
-    CHECK_NOT_FALSE,
-    CHECK_UNDEFINED,
-    CHECK_NOT_UNDEFINED,
-    CHECK_NULL,
-    CHECK_NOT_NULL
-} from 'BUILD/cacau.js';
-
+require('BUILD/cacau-1.1.0.js');
 
 TEST('CHECKS',
     TEST_F('CHECK_TRUE', () => {

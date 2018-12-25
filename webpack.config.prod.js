@@ -5,11 +5,11 @@ module.exports = {
     entry: "./index.js",
         output: {
         path: path.resolve(__dirname, "build/"),
-        filename: "cacau.js",
-        libraryTarget: 'umd',
-        globalObject: 'this',
-        libraryExport: 'default',
-        library: 'cacau'
+        filename: "cacau.js"
+//        libraryTarget: 'umd',
+//        globalObject: 'this',
+//        libraryExport: 'default',
+//        library: 'cacau'
     },
     module: {
         rules: [
@@ -23,7 +23,7 @@ module.exports = {
                         presets: ["babel-preset-env"]
                     }
                 }
-            },
+            }
         ]
     }
 };

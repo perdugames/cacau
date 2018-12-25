@@ -1,5 +1,4 @@
-import {TEST, TEST_F, CHECK_ACTUAL_EQUAL_EXPECTED} from 'BUILD/cacau.js';
-
+require('BUILD/cacau-1.1.0.js');
 
 const FIXTURE = () => {
     function Duckling(name) {
