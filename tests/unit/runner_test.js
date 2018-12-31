@@ -74,7 +74,7 @@ TEST_ASYNC('TestGetRunProgressCheckReturnEqual100', (done) => {
     const runner = new Runner();
     const rootSuite = runner.rootSuite;
 
-    const test = runner.createAsyncTest('Test 1', function(testDone) { testDone(); });
+    const test = runner.createTest('Test 1', function(testDone) { testDone(); });
     rootSuite.addChild(test);
 
     const callbackRunProgress = () => done( () => {
@@ -84,11 +84,11 @@ TEST_ASYNC('TestGetRunProgressCheckReturnEqual100', (done) => {
     
 });
 
-TEST_ASYNC('TestAsyncCreateAsyncTestCheckResultRunFailingEqualZero', (done) => {
+TEST_ASYNC('TestAsyncCreateTestCheckResultRunFailingEqualZero', (done) => {
     const runner = new Runner();
     const rootSuite = runner.rootSuite;
 
-    const test = runner.createAsyncTest('Test 1', function(testDone) { testDone(); });
+    const test = runner.createTest('Test 1', function(testDone) { testDone(); });
     rootSuite.addChild(test);
 
     const callbackRunProgress = () => {
@@ -99,12 +99,12 @@ TEST_ASYNC('TestAsyncCreateAsyncTestCheckResultRunFailingEqualZero', (done) => {
     
 });
 
-TEST_ASYNC('TestAsyncCreateAsyncWithDoneArgErrorCheckResultErrors', (done) => {
+TEST_ASYNC('TestAsyncCreateTestWithDoneArgErrorCheckResultErrors', (done) => {
     const runner = new Runner();
     const rootSuite = runner.rootSuite;
     const error = new Error();
 
-    const test = runner.createAsyncTest('Test 1', function(testDone) { testDone(error); });
+    const test = runner.createTest('Test 1', function(testDone) { testDone(error); });
     rootSuite.addChild(test);
 
     const callbackRunProgress = () => {
@@ -115,14 +115,14 @@ TEST_ASYNC('TestAsyncCreateAsyncWithDoneArgErrorCheckResultErrors', (done) => {
     
 });
 
-TEST_ASYNC('TestAsyncCreateAsyncWithDoneArgFunctionCheckResultErrors', (done) => {
+TEST_ASYNC('TestAsyncCreateTestWithDoneArgFunctionCheckResultErrors', (done) => {
     const runner = new Runner();
     const rootSuite = runner.rootSuite;
     const error = () => {
         CHECK_TRUE(false);
     }
 
-    const test = runner.createAsyncTest('Test 1', function(testDone) { testDone(error); });
+    const test = runner.createTest('Test 1', function(testDone) { testDone(error); });
     rootSuite.addChild(test);
 
     const callbackRunProgress = () => {
@@ -139,7 +139,7 @@ TEST_ASYNC('TestCreateSuiteRecursiveCheckResultFailingEqualZero', (done) => {
 
     const suite1 = runner.createSuite('Suite 1');
     rootSuite.addChild(suite1);
-    const test1 = runner.createAsyncTest('Suite 1 - Test 1', function(testDone) { 
+    const test1 = runner.createTest('Suite 1 - Test 1', function(testDone) { 
         testDone();
     });
     suite1.addChild(test1);
@@ -166,8 +166,8 @@ TEST_ASYNC('TestBeforeAllCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: false });
-    suite1.beforeAll = runner.createHook(function(varsFixture) {
-        varsFixture.x = true;
+    suite1.createBeforeAll(function() {
+        this.x = true;
     });
 
     const test1 = runner.createTest('Test 1', function() {
@@ -190,7 +190,7 @@ TEST_ASYNC('TestAsyncBeforeAllCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: false });
-    suite1.beforeAll = runner.createAsyncHook(function(hookDone) {
+    suite1.createBeforeAll(function(hookDone) {
         this.x = true;
         hookDone();
     });
@@ -208,7 +208,6 @@ TEST_ASYNC('TestAsyncBeforeAllCheckRunnerResultFailing', (done) => {
 });
 
 TEST_ASYNC('TestBeforeAllRecursiveCheckRunnerResultFailing', (done) => {
-
     const runner = new Runner();
     const rootSuite = runner.rootSuite;
 
@@ -216,8 +215,8 @@ TEST_ASYNC('TestBeforeAllRecursiveCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: false });
-    suite1.beforeAll = runner.createHook(function(varsFixture) {
-        varsFixture.x = true;
+    suite1.createBeforeAll(function() {
+        this.x = true;
     });
     const test1 = runner.createTest('Test 1', function() {
         CHECK_TRUE(this.x);
@@ -227,8 +226,8 @@ TEST_ASYNC('TestBeforeAllRecursiveCheckRunnerResultFailing', (done) => {
     const suite1Suite2 = runner.createSuite('Suite 1 - Suite 2');
     suite1.addChild(suite1Suite2);
     suite1Suite2.addVarsFixture({ y: 9 });
-    suite1Suite2.beforeAll = runner.createAsyncHook(function(hookDone, varsFixture) {
-        varsFixture.x = false;
+    suite1Suite2.createBeforeAll(function(hookDone) {
+        this.x = false;
         hookDone();
     });
     const suite2Test1 = runner.createTest('Suite 1 - Suite 2 - Test 1', function() {
@@ -251,8 +250,8 @@ TEST_ASYNC('TestAfterAllCheckSuite1ScopeX', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: true });
-    suite1.afterAll = runner.createHook(function(varsFixture) {
-        varsFixture.x = false;
+    suite1.createAfterAll(function() {
+        this.x = false;
     });
     const test1 = runner.createTest('Test 1', function() {
         CHECK_TRUE(this.x);
@@ -274,7 +273,7 @@ TEST_ASYNC('TestAsyncAfterAllCheckSuite1ScopeX', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: true });
-    suite1.afterAll = runner.createAsyncHook(function(hookDone) {
+    suite1.createAfterAll(function(hookDone) {
         this.x = false;
         hookDone();
     });
@@ -297,8 +296,8 @@ TEST_ASYNC('TestAfterAllCheckOrderAfterAll', (done) => {
     const suite1 = runner.createSuite('Suite 1');
     rootSuite.addChild(suite1);
     suite1.addVarsFixture({ x: true });
-    suite1.afterAll = runner.createHook(function(varsFixture) {
-        varsFixture.x = false;
+    suite1.createAfterAll(function() {
+        this.x = false;
     });
     const test1 = runner.createTest('Test 1', function() {
         CHECK_TRUE(this.x);
@@ -308,8 +307,8 @@ TEST_ASYNC('TestAfterAllCheckOrderAfterAll', (done) => {
     const suite1Suite2 = runner.createSuite('Suite 1 - Suite 2');
     suite1.addChild(suite1Suite2);
     suite1Suite2.addVarsFixture({ y: 9 });
-    suite1Suite2.afterAll = runner.createHook(function(varsFixture) {
-        varsFixture.x = false;
+    suite1Suite2.createAfterAll(function() {
+        this.x = false;
     });
     const suite2Test1 = runner.createTest('Suite 1 - Suite 2 - Test 1', function() {
         CHECK_TRUE(this.x);
@@ -330,7 +329,7 @@ TEST_ASYNC('TestAfterAllRecursiveCheckOrderAfterAll', (done) => {
     
     const suite1 = runner.createSuite('Suite 1');
     rootSuite.addChild(suite1);
-    suite1.afterAll = runner.createHook(function(varsFixture) {
+    suite1.createAfterAll(function() {
         spyX = 2;
 //        console.log(this.name);
     });
@@ -341,7 +340,7 @@ TEST_ASYNC('TestAfterAllRecursiveCheckOrderAfterAll', (done) => {
     
     const suite1Suite2 = runner.createSuite('Suite 1 - Suite 2');
     suite1.addChild(suite1Suite2);
-    suite1Suite2.afterAll = runner.createAsyncHook(function(hookDone, varsFixture) {
+    suite1Suite2.createAfterAll(function(hookDone) {
         spyX = 1;
         hookDone();
 //        console.log(this.name);
@@ -359,7 +358,7 @@ TEST_ASYNC('TestAfterAllRecursiveCheckOrderAfterAll', (done) => {
     
     const suite2 = runner.createSuite('Suite 2');
     rootSuite.addChild(suite2);
-    suite2.afterAll = runner.createHook(function(varsFixture) {
+    suite2.createAfterAll(function() {
         spyX = 3;
 //        console.log(this.name);
     });
@@ -379,9 +378,9 @@ TEST_ASYNC('TestBeforeEarchCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: 0 });
-    suite1.beforeEach = runner.createHook(function(varsFixture) {
+    suite1.createBeforeEach(function() {
 //        console.log(varsFixture);
-        varsFixture.x = 0;
+        this.x = 0;
     });
     
     const test1 = runner.createTest('Test 1', function() {
@@ -391,7 +390,7 @@ TEST_ASYNC('TestBeforeEarchCheckRunnerResultFailing', (done) => {
     });
     suite1.addChild(test1);
     
-    const test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const test2 = runner.createTest('Test 2', function(testDone) {
 //        console.log(this);
         this.x++;
         testDone(() => CHECK_ACTUAL_EQUAL_EXPECTED(this.x, 1));
@@ -413,9 +412,9 @@ TEST_ASYNC('TestBeforeEarchRecursiveCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: 0 });
-    suite1.beforeEach = runner.createHook(function(varsFixture) {
+    suite1.createBeforeEach(function() {
 //        console.log(varsFixture);
-        varsFixture.x = 0;
+        this.x = 0;
     });
     const test1 = runner.createTest('Test 1', function() {
 //        console.log(this.x);
@@ -434,8 +433,8 @@ TEST_ASYNC('TestBeforeEarchRecursiveCheckRunnerResultFailing', (done) => {
     suite1.addChild(suite2);
    
     suite2.addVarsFixture({ y: 0 });
-    suite2.beforeEach = runner.createAsyncHook(function(hookDone, varsFixture) {
-        varsFixture.x++;
+    suite2.createBeforeEach(function(hookDone) {
+        this.x++;
         hookDone();
     });
     const suite2Test1 = runner.createTest('Test 1', function() {
@@ -460,11 +459,11 @@ TEST_ASYNC('TestAfterEarchCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: 0 });
-    suite1.afterEach = runner.createHook(function(varsFixture) {
-        varsFixture.x = 0;
+    suite1.createAfterEach(function() {
+        this.x = 0;
     });
 
-    const test1 = runner.createAsyncTest('Test 1', function(testDone) {
+    const test1 = runner.createTest('Test 1', function(testDone) {
         this.x++;
         testDone(() => CHECK_ACTUAL_EQUAL_EXPECTED(this.x, 1));
     });
@@ -491,9 +490,9 @@ TEST_ASYNC('TestAfterEarchRecursiveCheckRunnerResultFailing', (done) => {
     rootSuite.addChild(suite1);
 
     suite1.addVarsFixture({ x: 0 });
-    suite1.afterEach = runner.createHook(function(varsFixture) {
-//        console.log(varsFixture.x);
-        varsFixture.x++;
+    suite1.createAfterEach(function() {
+//        console.log(this.x);
+        this.x++;
     });
     const test1 = runner.createTest('Test 1', function() {
 //        console.log(this.x);
@@ -512,8 +511,8 @@ TEST_ASYNC('TestAfterEarchRecursiveCheckRunnerResultFailing', (done) => {
     suite1.addChild(suite2);
 
     suite2.addVarsFixture({ y: 0 });
-    suite2.afterEach = runner.createAsyncHook(function(hookDone, varsFixture) {
-        varsFixture.x = 0;
+    suite2.createAfterEach(function(hookDone) {
+        this.x = 0;
         hookDone();
     });
 
@@ -523,7 +522,7 @@ TEST_ASYNC('TestAfterEarchRecursiveCheckRunnerResultFailing', (done) => {
     });
     suite2.addChild(suite2Test1);
 
-    const suite2Test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const suite2Test2 = runner.createTest('Test 2', function(testDone) {
         this.x++;
         testDone(() => CHECK_ACTUAL_EQUAL_EXPECTED(this.x, 2));
     });
@@ -632,7 +631,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveCheckResultRunFailingEqualFive', (done) => 
     });
     suite1.addChild(test1);
     
-    const test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const test2 = runner.createTest('Test 2', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -648,7 +647,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveCheckResultRunFailingEqualFive', (done) => 
         CHECK_TRUE(true);
     });
     suite2.addChild(test3);
-    const test4 = runner.createAsyncTest('Test 4', function(testDone) {
+    const test4 = runner.createTest('Test 4', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -684,7 +683,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveTestReconfigureTimeoutCheckResultRunFailing
     });
     suite1.addChild(test1);
     
-    const test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const test2 = runner.createTest('Test 2', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -701,7 +700,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveTestReconfigureTimeoutCheckResultRunFailing
         CHECK_TRUE(true);
     });
     suite2.addChild(test3);
-    const test4 = runner.createAsyncTest('Test 4', function(testDone) {
+    const test4 = runner.createTest('Test 4', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -737,7 +736,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveSuiteReconfigureTimeoutCheckResultRunFailin
     });
     suite1.addChild(test1);
     
-    const test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const test2 = runner.createTest('Test 2', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -754,7 +753,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveSuiteReconfigureTimeoutCheckResultRunFailin
         CHECK_TRUE(true);
     });
     suite2.addChild(test3);
-    const test4 = runner.createAsyncTest('Test 4', function(testDone) {
+    const test4 = runner.createTest('Test 4', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -790,7 +789,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveSuiteAndTestReconfigureTimeoutCheckResultRu
     });
     suite1.addChild(test1);
     
-    const test2 = runner.createAsyncTest('Test 2', function(testDone) {
+    const test2 = runner.createTest('Test 2', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -808,7 +807,7 @@ TEST_ASYNC('TestTimeoutSuiteRecursiveSuiteAndTestReconfigureTimeoutCheckResultRu
         CHECK_TRUE(true);
     });
     suite2.addChild(test3);
-    const test4 = runner.createAsyncTest('Test 4', function(testDone) {
+    const test4 = runner.createTest('Test 4', function(testDone) {
         let i = 0;
         while(i < 10000000) { i++; }
         testDone(() => CHECK_TRUE(true));
@@ -835,11 +834,11 @@ TEST_ASYNC('TestTimeoutHookCheckResultErrorsLength', (done) => {
     const suite1 = runner.createSuite('Suite 1');
     rootSuite.addChild(suite1);
     suite1.addVarsFixture({x: 8});
-    suite1.beforeAll = runner.createHook('HookSuite1', function(varsFixture) {
+    suite1.createBeforeAll('HookSuite1', function() {
         this.timeout(1);  
         let i = 0;
         while(i < 10000000) { i++; }
-        varsFixture.x = true;
+        this.x = true;
     });
     const test = runner.createTest('Test 1', function() {
         CHECK_TRUE(true);
@@ -859,11 +858,11 @@ TEST_ASYNC('TestTimeoutAsyncHookCheckResultErrorsLength', (done) => {
     const suite1 = runner.createSuite('Suite 1');
     rootSuite.addChild(suite1);
     suite1.addVarsFixture({x: 8});
-    suite1.beforeAll = runner.createAsyncHook('HookSuite1', function(hookDone, varsFixture) {
+    suite1.createBeforeAll('HookSuite1', function(hookDone) {
         this.timeout(1);  
         let i = 0;
         while(i < 10000000) { i++; }
-        varsFixture.x = true;
+        this.x = true;
         hookDone();
     });
     const test = runner.createTest('Test 1', function() {
@@ -885,11 +884,11 @@ TEST_ASYNC('TestTimeoutHookRecursiveCheckResultErrorsLength', (done) => {
     rootSuite.addChild(suite1);
     suite1.addVarsFixture({x: 8});
     suite1.scope.timeout(1);
-    suite1.afterEach = runner.createAsyncHook('HookSuite1', function(hookDone, varsFixture) {
+    suite1.createAfterEach('HookSuite1', function(hookDone) {
         this.timeout(5000);  
         let i = 0;
         while(i < 10000000) { i++; }
-        varsFixture.x = true;
+        this.x = true;
         hookDone();
     });
     const test = runner.createTest('Test 1', function() {
@@ -900,11 +899,11 @@ TEST_ASYNC('TestTimeoutHookRecursiveCheckResultErrorsLength', (done) => {
     const suite2 = runner.createSuite('Suite 2');
     suite1.addChild(suite2);
     suite2.addVarsFixture({x: 9});
-    suite2.beforeEach = runner.createAsyncHook('HookSuite1', function(hookDone, varsFixture) {
+    suite2.createBeforeEach('HookSuite1', function(hookDone) {
 //        this.timeout(1);  
         let i = 0;
         while(i < 10000000) { i++; }
-        varsFixture.x = true;
+        this.x = true;
         hookDone();
     });
     const test2 = runner.createTest('Test 2', function() {
@@ -917,7 +916,4 @@ TEST_ASYNC('TestTimeoutHookRecursiveCheckResultErrorsLength', (done) => {
            done(() => CHECK_ACTUAL_EQUAL_EXPECTED(runner.result.errors.length, 1)); 
     };
     runner.run(callbackRunProgress);
-}); 
-
-
-
+});
