@@ -5,11 +5,6 @@ TEST('CHECKS',
         const valueTrue = true;
         return CHECK_TRUE(valueTrue);
     }),
-     
-//    TEST_F('CHECK_TRUE_FAILING', () => {
-//        const valueTrue = false;
-//        return CHECK_TRUE(valueTrue);
-//    }),
 
     TEST_F('CHECK_FALSE', () => {
         const valueFalse = false;
