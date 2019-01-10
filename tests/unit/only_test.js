@@ -372,3 +372,169 @@ TEST_ASYNC('TestOnlySuiteRecursiveWithTwoSuiteInRootSuiteCheckResultFailingEqual
     };
     runner.run(callbackRunProgress);
 });
+
+TEST_ASYNC('TestOnlySuiteRecursiveWithTwoSuiteInRootSuiteCheckResultFailingEqualTwo', (done) => {
+    const runner = new Runner();
+    const rootSuite = runner.rootSuite;
+    createNewTddInterface(rootSuite, global, runner);
+    
+    suite('Suite 1', function() {
+        
+        test('Test 1', function() {
+            CHECK_TRUE(false);
+        });
+        
+        test('Test 2', function() {
+            CHECK_TRUE(false);
+        });
+        
+        suite('Suite 2', function() {
+            
+            test.only('Test 1', function() {
+                CHECK_TRUE(false);
+            });
+            
+        });
+        
+        test('Test 3', function() {
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    suite('Suite 3', function() {
+        
+        test.only('Test 1', function() {
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    const callbackRunProgress = () => {
+        if(runner.getRunProgress() === 100)
+            done(() => CHECK_ACTUAL_EQUAL_EXPECTED(runner.result.failing, 2));
+    };
+    runner.run(callbackRunProgress);
+});
+
+TEST_ASYNC('TestOnlySuiteRecursiveCheckXEqualTwo', (done) => {
+    const runner = new Runner();
+    const rootSuite = runner.rootSuite;
+    createNewTddInterface(rootSuite, global, runner);
+    let x = 0;
+    
+    suite('Suite 1', function() {
+        
+        test('Test 1', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+        test('Test 2', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+        suite('Suite 2', function() {
+            
+            test.only('Test 1', function() {
+                x++;
+                CHECK_TRUE(false);
+            });
+            
+            test('Test 2', function() {
+                x++;
+                CHECK_TRUE(false);
+            });
+            
+        });
+        
+        test('Test 3', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    suite('Suite 3', function() {
+        
+        test.only('Test 1', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    const callbackRunProgress = () => {
+        if(runner.getRunProgress() === 100)
+            done(() => CHECK_ACTUAL_EQUAL_EXPECTED(x, 2));
+    };
+    runner.run(callbackRunProgress);
+});
+
+TEST_ASYNC('TestOnlySuiteRecursiveWithBeforeEachCheckXEqualThree', (done) => {
+    const runner = new Runner();
+    const rootSuite = runner.rootSuite;
+    createNewTddInterface(rootSuite, global, runner);
+    let x = 0;
+    
+    suite('Suite 1', function() {
+        
+        beforeAll(function() {
+            x++;
+        });
+        
+        test('Test 1', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+        test.only('Test 2', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+        suite('Suite 2', function() {
+            
+            beforeAll(function() {
+                x++;
+            });
+            
+            beforeEach(function() {
+                x++;
+            });
+            
+            test('Test 1', function() {
+                x++;
+                CHECK_TRUE(false);
+            });
+            
+            test('Test 2', function() {
+                x++;
+                CHECK_TRUE(false);
+            });
+            
+        });
+        
+        test('Test 3', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    suite('Suite 3', function() {
+        
+        test.only('Test 1', function() {
+            x++
+            CHECK_TRUE(false);
+        });
+        
+    });
+    
+    const callbackRunProgress = () => {
+        if(runner.getRunProgress() === 100)
+            done(() => CHECK_ACTUAL_EQUAL_EXPECTED(x, 3));
+    };
+    runner.run(callbackRunProgress);
+});
