@@ -15,3 +15,5 @@
 //import './unit/after_each_test';
 //import './unit/timeout_test';
 import './unit/only_test';
+import './unit/skip_test';
+import './unit/only_and_skip_test';
