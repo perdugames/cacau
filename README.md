@@ -18,7 +18,7 @@ npm install cacau
 Using CDN:
 
 ```html
-<script src="https://unpkg.com/cacau@2.0.2/build/cacau-2.0.0.js"></script>
+<script src="https://unpkg.com/cacau@2.0.1/build/cacau-2.0.0.js"></script>
 ```
 2 - You need to import the Cacau into your project:
 
@@ -318,7 +318,7 @@ To use Cacau in the Browser you need to import the Cacau from some CDN or locall
 </head>
 
 <body>    
-    <script src="https://unpkg.com/cacau@2.0.2/build/cacau-2.0.0.js"></script>
+    <script src="https://unpkg.com/cacau@2.0.1/build/cacau-2.0.0.js"></script>
     
     <script> 
         cacau.ui('NewTdd').reporter('Min');
