@@ -1,4 +1,4 @@
-import 'BUILD/cacau.js';
+import 'BUILD/cacau-2.0.0.js';
 //require('BUILD/cacau');
 
 cacau.ui('NewTdd').reporter('Min');
