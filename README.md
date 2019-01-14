@@ -23,7 +23,7 @@ Utilizando CDN:
 2 - Você precisa importar a Cacau em seu projeto:
 
 ```javascript
-import 'cacau";
+import 'cacau';
 //or
 require('cacau');
 ```
@@ -32,9 +32,7 @@ require('cacau');
 ```javascript
 cacau.ui('NewTdd');
 cacau.reporter('Min');
-
-//or 
-
+//or
 cacau.ui('NewTdd').reporter('Min');
 ```
 4 - Escreva seus testes(escolhi a interface "NewTdd", veja #Interfaces para ver outras interfaces disponiveis):
@@ -183,24 +181,61 @@ Acima o Test 1 herda o timeou configurado para 1 do pai e irá falhar com o segu
 
 ### Only and Skip
 
+A funcionalidade "only" e "skip" da Cacau funcionam seguindo 4 regras de precedência:
+
+1 - Testes only têm precedência de testes skip:
 
 ```javascript
-TEST('/myFile.js',
-      
-    TEST_F('test1', () => {
-        // ...
-        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
-    }),
-
-    TEST_F('test2', () => {
-        // ...
-        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
-    }),
-
-    // ...
-);
+Suite1 // run!
+	test1
+	test2.skip 
+	suite2 // run!
+		test1.only // run!
+		test2
 ```
+2 - Suítes only têm precedência de suítes skip:
 
+```javascript
+Suite1.skip // run!
+	test1
+	suite2.only // run!
+		test1 // run!
+		test2 // run!
+
+//or
+
+Suite1.only // run!
+	test1 // run!
+	suite2.skip // run!
+		test1 // run!
+		test2 // run!
+
+// or
+
+Suite1.only // run!
+	test1 // run!
+	suite2.skip // run!
+		test1.skip // run!
+		test2 // run!
+```
+3 - Testes skip têm precedência de suítes only:
+
+```javascript
+Suite1.only // run!
+	test1 // run!
+	suite2 // run!
+		test1.skip
+		test2 // run!
+```
+4 - Testes only têm precedência de suítes skip:
+
+```javascript
+Suite1.skip // run!
+	test1
+	suite2 // run!
+		test1.only // run!
+		test2
+```
 ### Interfaces
 
 A Cacau possui atualmente duas interfaces:
