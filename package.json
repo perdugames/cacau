@@ -1,6 +1,6 @@
 {
   "name": "cacau",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "Test API in JavaScript.",
   "main": "cacau.js",
   "scripts": {
