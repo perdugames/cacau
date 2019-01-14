@@ -8,26 +8,26 @@
 
 ### How to use Cacau
 
-1 - Primeiro você deve baixar a Cacau:
+1 - First you must download the Cacau:
 
-Utilizando npm install
+Using npm install
 
 ```shell
 npm install cacau
 ```
-Utilizando CDN:
+Using CDN:
 
 ```html
 <script src="https://unpkg.com/cacau@VERSION/build/cacau-VERSION.js"></script>
 ```
-2 - Você precisa importar a Cacau em seu projeto:
+2 - You need to import the Cacau into your project:
 
 ```javascript
 import 'cacau';
 //or
 require('cacau');
 ```
-3 - Você precisa também escolher a interface e o reporter que deseja utilizar:
+3 - You also have to choose the interface and the reporter that you want to use:
 
 ```javascript
 cacau.ui('NewTdd');
@@ -35,7 +35,7 @@ cacau.reporter('Min');
 //or
 cacau.ui('NewTdd').reporter('Min');
 ```
-4 - Escreva seus testes(escolhi a interface "NewTdd", veja #Interfaces para ver outras interfaces disponiveis):
+4 - Write your tests (I chose the interface "NewTdd", see #Interfaces to see other interfaces available):
 
 ```javascript
 suite('Suite 1', function() {
@@ -54,7 +54,7 @@ suite('Suite 1', function() {
     
 });
 ```
-A Cacau já vem com uma biblioteca de asserção que você pode utilizar, verifique #API para saber as funções de asserção disponiveis, mas você também pode utilizar outra bibioteca de asserção como ChaiJS por exemplo. 
+The Cacau already comes with an assertion library you can use, check #API for assertion functions available, but you can also use another assertion library like ChaiJS for example.
 
 ```javascript
 suite('Suite 1', function() {
@@ -75,14 +75,14 @@ suite('Suite 1', function() {
 ```
 ### Hooks
 
-Existem 4 tipos de hook na Cacau, eles seguem a ordem de execução apresentada abaixo: 
+There are 4 types of hook in Cacau, they follow the order of execution presented below:
 
-beforeAll - antes de todos os testes
-beforeEach - antes de cada teste
-afterEach - após cada teste
-afterAll - após todos os testes
+beforeAll - before all tests
+beforeEach - before each test
+afterEach - after each test
+afterAll - after all tests
 
-Os hooks da Cacau assim como as suítes, podem ser aninhados, ou seja se existe uma suíte dentro de uma suíte, os hooks da suite pai serão executados também nos testes da suíte filho. Exemplo:
+Cocoa hooks as well as suites can be nested, that is, if there is a suite within a suite, the hooks in the parent suite will also run on the child suite tests. Example:
 
 ```javascript
 suite('Suite 1', function() {
@@ -118,7 +118,7 @@ suite('Suite 1', function() {
 });
 ```
 
-Acima no Teste 1 da Suite 2, ambos os beforeEach serão executados, o BeforeEach da Suite 1 será executado antes do beforeEach da Suite 2. Você também pode dar uma descrição para os hooks se desejar:
+Above in Test 1 of Suite 2, both beforeEach will run, BeforeEach from Suite 1 will run before Suite 2 beforeEach. You can also give a description for the hooks if you want:
 
 ```javascript
 suite('Suite 1', function() {
@@ -137,7 +137,7 @@ suite('Suite 1', function() {
 ```
 ### Async Test
 
-Você pode testar o código assincrono na Cacau facilmente apenas passando uma função "done" para a função de teste como mmostrado abaixo:
+You can test the asynchronous code in Cacau easily just by passing a "done" function to the test function as shown below:
 
 ```javascript
 suite('Suite 1', function() {
@@ -152,11 +152,11 @@ suite('Suite 1', function() {
     
 });
 ```
-Veja acima, você pode passar asseções como argumento para "done", você também pode passar um erro como argumento para "done", talvez esta seja a unica vantagem da Cacau em relação a outros frameworks que não suportam passar funções de asserção como argumento de "done", como o Mocha. Mocha me inspirou bastante para criar a Cacau, estudei muito seu código, e recomendo essa biblioteca, possui um código bem organizado, comparando ao Mocha, a Cacau tem mais desvantagens do que vantagens. 
+See above, you can pass as an argument to "done", you can also pass an error as an argument to "done", perhaps this is the only advantage of Cacau in relation to other frameworks that do not support passing assertion functions as argument "done," like Mocha. Mocha inspired me enough to create Cacau, I studied his code a lot, and I recommend this framework, it has a well organized code, compared to Mocha, Cacau has more disadvantages than advantages.
 
 ### Timeout
 
-Os timeout da Cacau podem ser aplicados em testes, suites ou hooks, os testes herdam o timeout de seu pai, a não ser que você configure um timeout no teste diretamente. Veja um exemplo:
+Cacau timeouts can be applied to tests, suites, or hooks, tests inherit their father's timeout, unless you set up a test timeout directly. Here's an example:
 
 ```javascript
 suite('Suite 1', function() {
@@ -177,13 +177,13 @@ suite('Suite 1', function() {
 
 });
 ```
-Acima o Test 1 herda o timeou configurado para 1 do pai e irá falhar com o seguinte erro "TimeoutError: Time(1) extrapolated!", enquanto o Test 2 reconfigurou seu timeout para 30000000 e passa.
+Above Test 1 inherits the timeout set to 1 from the parent and will fail with the following error "TimeoutError: Time(1) extrapolated!" While Test 2 reconfigured its timeout to 30000000 and passes.
 
 ### Only and Skip
 
-A funcionalidade "only" e "skip" da Cacau funcionam seguindo 4 regras de precedência:
+Cacau "only" and "skip" functionality work by following 4 precedence rules:
 
-1 - Testes only têm precedência de testes skip:
+1 - Tests only have precedence of tests skip:
 
 ```javascript
 Suite1 // run!
@@ -193,7 +193,7 @@ Suite1 // run!
 		test1.only // run!
 		test2
 ```
-2 - Suítes only têm precedência de suítes skip:
+2 - Suites only have precedence of skip suites:
 
 ```javascript
 Suite1.skip // run!
@@ -218,7 +218,7 @@ Suite1.only // run!
 		test1.skip // run!
 		test2 // run!
 ```
-3 - Testes skip têm precedência de suítes only:
+3 - Skip tests have precedence of suites only:
 
 ```javascript
 Suite1.only // run!
@@ -227,7 +227,7 @@ Suite1.only // run!
 		test1.skip
 		test2 // run!
 ```
-4 - Testes only têm precedência de suítes skip:
+4 - Tests only have precedence of skip suites:
 
 ```javascript
 Suite1.skip // run!
@@ -238,7 +238,7 @@ Suite1.skip // run!
 ```
 ### Interfaces
 
-A Cacau possui atualmente duas interfaces:
+Cacau currently has two interfaces:
 
 NewTdd:
 
@@ -297,7 +297,7 @@ describe('Suite 1', function() {
 ```
 ### Reporters
 
-A Cacau atualmente possui um unico reporter:
+Cacau currently has only one reporter:
 
 Min:
 
@@ -306,7 +306,7 @@ Min:
 
 #### Running Cacau in the Browser:
 
-Para utilizar a Cacau no Browser é preciso importar a Cacau de algum CDN ou localmente, abaixo é mostrado utilizando um CDN:
+To use Cacau in the Browser you need to import the Cacau from some CDN or locally, below is shown using CDN:
 
 ```html
 <!DOCTYPE html>
@@ -319,7 +319,7 @@ Para utilizar a Cacau no Browser é preciso importar a Cacau de algum CDN ou loc
 </head>
 
 <body>    
-    <script src="CDN/cacau.js"></script>
+    <script src="https://unpkg.com/cacau@VERSION/build/cacau-VERSION.js"></script>
     
     <script> 
         cacau.ui('NewTdd').reporter('Min');
