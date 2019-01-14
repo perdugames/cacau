@@ -4,29 +4,185 @@
   <img width="300" height="480" src="./images/img_cacau.png">
 </p>
 
-## Test API in JavaScript(Client).
+## Test API in JavaScript.
 
 ### How to use Cacau
 
-The code below will show you how to use the API and also explains how to
-The **TEST_F** receives as a first argument a String, and the second a function, where you must render the result of a CHECK function. May seem tricky at first, but it's quite simple. Look at the simple example below:
+1 - Primeiro você deve baixar a Cacau:
+
+Utilizando npm install
+
+```shell
+npm install cacau
+```
+Utilizando CDN:
+
+```html
+<script src="https://unpkg.com/cacau@VERSION/build/cacau-VERSION.js"></script>
+```
+2 - Você precisa importar a Cacau em seu projeto:
 
 ```javascript
-TEST('/myFile.js',
+import 'cacau";
+//or
+require('cacau');
+```
+3 - Você precisa também escolher a interface e o reporter que deseja utilizar:
+
+```javascript
+cacau.ui('NewTdd');
+cacau.reporter('Min');
+
+//or 
+
+cacau.ui('NewTdd').reporter('Min');
+```
+4 - Escreva seus testes(escolhi a interface "NewTdd", veja #Interfaces para ver outras interfaces disponiveis):
+
+```javascript
+suite('Suite 1', function() {
       
-    TEST_F('testAplusB', () => {
-        const A = 1;
-        const B = 1;
-        const actual = plus(A, B);
-        const expected = A + B;
-        return CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected);
-    }),
-);
+    test('Suite 1 - Test 1', () => {
+        isTrue(true);
+    });
+    
+    suite('Suite 2', function() {
+    
+        test('Suite 2 - Test 1', () => {
+            isTrue(true);
+        });
+    
+    });
+    
+});
+```
+A Cacau já vem com uma biblioteca de asserção que você pode utilizar, verifique #API para saber as funções de asserção disponiveis, mas você também pode utilizar outra bibioteca de asserção como ChaiJS por exemplo. 
+
+```javascript
+suite('Suite 1', function() {
+      
+    test('Suite 1 - Test 1', () => {
+        expect(1).to.equal(2);
+    });
+    
+    suite('Suite 2', function() {
+    
+        test('Suite 2 - Test 1', () => {
+            isTrue(true);
+        });
+    
+    });
+    
+});
+```
+### Hooks
+
+Existem 4 tipos de hook na Cacau, eles seguem a ordem de execução apresentada abaixo: 
+
+beforeAll - antes de todos os testes
+beforeEach - antes de cada teste
+afterEach - após cada teste
+afterAll - após todos os testes
+
+Os hooks da Cacau assim como as suítes, podem ser aninhados, ou seja se existe uma suíte dentro de uma suíte, os hooks da suite pai serão executados também nos testes da suíte filho. Exemplo:
+
+```javascript
+suite('Suite 1', function() {
+    let x = 0;
+
+    beforeEach(function() {
+        x = 0;
+    });
+      
+    test('Suite 1 - Test 1', () => {
+        x++;
+        actualEqualExpected(x, 1);
+    });
+    
+    suite('Suite 2', function() {
+    
+        beforeEach(function() {
+            x++;
+        });
+    
+        test('Suite 2 - Test 1', () => {
+            x++;
+            actualEqualExpected(x, 2);
+        });
+    
+    });
+    
+    test('Suite 1 - Test 2', () => {
+        x++;
+        actualEqualExpected(x, 1);
+    });
+    
+});
 ```
 
-We are checking if the "Plus()" function is acting as expected, we pass A and B to it that have a value of 1, and we expect it to return 2, we use **CHECK_ACTUAL_EQUAL_EXPECTED()** to do this verification (this function has that name because I got tired of having to check if the "current" parameter is the first or second parameter, my mind tends to dyslexia with those things, and I wasted time with it when I forgot or confused myself, so I decided change your name by informing the correct order of arguments).
+Acima no Teste 1 da Suite 2, ambos os beforeEach serão executados, o BeforeEach da Suite 1 será executado antes do beforeEach da Suite 2. Você também pode dar uma descrição para os hooks se desejar:
 
-It is possible to write several tests for the same file, because the **TEST** function receives as a second argument, as many test functions as you want (being limited only to how many arguments JavaScript allows you to pass, I'm not sure how many, but it should be enough) , the second argument uses the spread syntax "... testFunctions", so you can add your tests, passing more test functions that we call with **TEST_F**, see below:
+```javascript
+suite('Suite 1', function() {
+    let x = 0;
+
+    beforeEach('beforeEach Suite 1', function() {
+        x = 0;
+    });
+      
+    test('Suite 1 - Test 1', () => {
+        x++;
+        actualEqualExpected(x, 1);
+    });
+    
+});
+```
+### Async Test
+
+Você pode testar o código assincrono na Cacau facilmente apenas passando uma função "done" para a função de teste como mmostrado abaixo:
+
+```javascript
+suite('Suite 1', function() {
+      
+    test('Suite 1 - Test 1', (done) => {
+        done();
+    });
+    
+    test('Suite 1 - Test 1', (done) => {
+        done(() => isTrue(true));
+    });
+    
+});
+```
+Veja acima, você pode passar asseções como argumento para "done", você também pode passar um erro como argumento para "done", talvez esta seja a unica vantagem da Cacau em relação a outros frameworks que não suportam passar funções de asserção como argumento de "done", como o Mocha. Mocha me inspirou bastante para criar a Cacau, estudei muito seu código, e recomendo essa biblioteca, possui um código bem organizado, comparando ao Mocha, a Cacau tem mais desvantagens do que vantagens. 
+
+### Timeout
+
+Os timeout da Cacau podem ser aplicados em testes, suites ou hooks, os testes herdam o timeout de seu pai, a não ser que você configure um timeout no teste diretamente. Veja um exemplo:
+
+```javascript
+suite('Suite 1', function() {
+    this.timeout(1);
+    
+    test('Suite 1 - Test 1', function() {
+        let i = 0;
+        while(i < 10000000) { i++; }
+        isTrue(true);
+    });
+    
+    test('Suite 1 - Test 2', () => {
+        this.timeout(30000000);
+        let i = 0;
+        while(i < 10000000) { i++; }
+        isTrue(true);
+    });
+
+});
+```
+Acima o Test 1 herda o timeou configurado para 1 do pai e irá falhar com o seguinte erro "TimeoutError: Time(1) extrapolated!", enquanto o Test 2 reconfigurou seu timeout para 30000000 e passa.
+
+### Only and Skip
+
 
 ```javascript
 TEST('/myFile.js',
@@ -45,149 +201,77 @@ TEST('/myFile.js',
 );
 ```
 
-Cacau has two ways to run your tests today. The first mode is by using a custom Webpack build, and the second mode is by calling Cacau and testing directly using the HTML script tags in your "runcacau.html". I'll show you what I'm saying below:
+### Interfaces
 
-**How to use FIXTURE in Cacau:**
+A Cacau possui atualmente duas interfaces:
 
-First create a FIXTURE function (you can call it as you want it), it must return an object, you can use that object in the test functions, but be careful with the references, use FIXTURE carefully, see example:
+NewTdd:
 
 ```javascript
-import {TEST, TEST_F, FIXTURE, CHECK_ACTUAL_EQUAL_EXPECTED} from './tests/cacau.js';
-
-const FIXTURE = () => {
-    function Duckling(name) {
-        this.name = name;
-    }
-    const fix = {
-         duckling: new Duckling("Julio"),
-         pos: { x: 0, y: 0 }
-    };
-    return fix;
-};
-
-TEST('testExample',
-    TEST_F('testChangeDucklingName', (FIX) => {
-        FIX.duckling.name = 'Matias'; 
-        const ducklingName = FIX.duckling.name;
-
-        return CHECK_ACTUAL_EQUAL_EXPECTED(ducklingName, 'Matias');
-    }, FIXTURE),
-
-    TEST_F('testPosIncrement', (FIX) => {
-        const expectedPos = FIX.pos.x + 1;
-        FIX.pos.x++;
-        const actualPos = FIX.pos.x;
-
-        return CHECK_ACTUAL_EQUAL_EXPECTED(actualPos, expectedPos);
-    }, FIXTURE),
-
-   TEST_F('testOnePlusOne', () => {
-        const result = 0;
-
-        const expected = result + 2;
+suite('Suite 1', function() {
     
-        const result = 1 + 1;
-
-        return CHECK_ACTUAL_EQUAL_EXPECTED(result, expected);
-    })
-
-);
-```
-
-**How to test async code in Cacau:**
-
-Note that this mode is not compatible with FIXTURE. Because only one invocation test of TEST_ASYNC is possible. See below:
-
-```javascript
-const imageDownload = (path, successCallback) => {
-    let img = new Image();
-    img.addEventListener("load", successCallback, false);
-    img.src = path;
-    return img;
-};
-
-TEST_ASYNC("TestAsyncFunctionTest", (done) => {
-    let spyCountSuccess = 0;
-    const expectedCountSuccess = spyCountSuccess + 1;
-
-    const successCallback = () => {
-        spyCountSuccess++;
-
-        const actualCountSuccess = spyCountSuccess;
-
-        const result = CHECK_ACTUAL_EQUAL_EXPECTED(actualCountSuccess, expectedCountSuccess);
-        done(result);
-    };
-
-    const pathImage = 'https://i.imgur.com/Wutekcp.jpg'; // or '../images/img_cacau.png';
-    const img = imageDownload(pathImage, successCallback);
-
+    beforeAll(function() {
+    
+    });
+    
+    afterAll(function() {
+    
+    });
+    
+    beforeEach(function() {
+    
+    });
+    
+    afterEach(function() {
+    
+    });
+      
+    test('Suite 1 - Test 1', () => {
+ 
+    });
+    
 });
 ```
-#### Running the tests using a custom Webpack configuration:
 
-We need to create a file in the root directory, called webpack.config.test.js webpack.config.test.js:
+Bdd:
 
 ```javascript
-const path = require("path");
-
-module.exports = {
-    entry: "./tests/executetests.js",
-    output: {
-        path: path.resolve(__dirname, "build/"),
-        filename: "example_test.js",
-    },
-    resolve: {
-        modules: [__dirname, "node_modules"],
-        alias: {
-          TESTS: path.resolve(__dirname, "tests")
-        },
-        extensions: ['.js']
-    },
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        cacheDirectory: true,
-                        presets: ["babel-preset-env"]
-                    }
-                }
-            },
-        ]
-    }
-};
-```
-
-Without fear, I will explain what he is, and what he is setting. In the webpack we can create several configuration files and call them in different compilation commands, for example, let's look at the lines below our file "package.json":
-
-```json
-"scripts": {
-        "build": "webpack --mode production --config webpack.config.js",
-        "develop": "webpack --mode development --watch --config webpack.config.dev.js"
-    },
-```
-
-Note the --config tag, with it we can call different compilation files for each npm command.
-
-Let's then create a new member in "script:" to compile our test execution file:
-
-```json
-"scripts": {
-        "build": "webpack --mode production --config webpack.config.js",
-        "develop": "webpack --mode development --watch --config webpack.config.dev.js",
-        "test": "webpack --mode development --watch --config webpack.config.test.js"
-    },
- ```
+describe('Suite 1', function() {
+    
+    beforeAll(function() {
+    
+    });
+    
+    afterAll(function() {
+    
+    });
+    
+    beforeEach(function() {
+    
+    });
+    
+    afterEach(function() {
+    
+    });
+      
+    it('Suite 1 - Test 1', () => {
  
-Now we have a new "test" member that will be called "npm run test", and it will compile our test execution file by calling our webpack configuration file "webpack.config.test.js". I kept the --watch tag to listen for the changes without having to run the "npm" command every time I need to run the tests. So any changes to the test code or implementation will be recognized by the webpack, which will re-compile and update automatically, so we just need to refresh the browser page to see what our test changes do.
+    });
+    
+});
+```
+### Reporters
 
-The input file is "./tests/executetests.js" which is our file that will import all the tests that will run. And the output file name for "example_test.js".
+A Cacau atualmente possui um unico reporter:
 
-We will now need to call this file generated by the webpack in our browser, for this we created the file "runcacau.html", follow the content of it below:
+Min:
+
+![cacau](./images/reporter_min.png)
+
+
+#### Running Cacau in the Browser:
+
+Para utilizar a Cacau no Browser é preciso importar a Cacau de algum CDN ou localmente, abaixo é mostrado utilizando um CDN:
 
 ```html
 <!DOCTYPE html>
@@ -199,84 +283,51 @@ We will now need to call this file generated by the webpack in our browser, for 
     <title>Cacau</title>
 </head>
 
-<body>
-    <script src="../build/example_test.js"></script>
-</body>
-</html>
-```
+<body>    
+    <script src="CDN/cacau.js"></script>
+    
+    <script> 
+        cacau.ui('NewTdd').reporter('Min');
 
-It is a very basic .html file, where we call with the script tag a single file generated by the webpack, which is our test execution file, so just call the file "runcacau.html" in your browser and you can see the test results on your console. An example of the file "executetests.js":
+        suite('Suite 1', function() {
 
-```javascript
-import './unit/examplefiletest_test';
-```
-#### Running the tests using the HTML script tag:
+            test('Test 1', function() {
+                isTrue(false);
+            });
 
-There is also another way to run the tests with Cacau, we can call it in an HTML script tag, follow the example below:
+        });
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cacau</title>
-</head>
-
-<body>
-    <script src="../build/all_tests.js"></script>
-    <script src="./cacau.js"></script>
-    <script>
-        cacau.TEST("../build/all_tests.js",
-            
-            cacau.TEST_F("AllTests", () => {
-                return CHECK_ACTUAL_EQUAL_EXPECTED(1, 1);
-            })
-        );
+        cacau.run();
     </script>
 </body>
-
 </html>
 ```   
-     
-See the example files in the example directory of this repository for more details. 
-Then you can use Cacau also in the CommonJS/AMD/ES2015 module, as in the Browser by calling in a script HTML tag.
-
-An example test that has passed and failed:
-
-![cacau](./images/img_example_passing_and_failing.png)
-
 ## API
 
-function **TEST(fileName, ...functions)**
+function **test(description, fn)**
 
-function **TEST_ASYNC(fileName, function)**
+function **suite(description, fn)**
 
-function **TEST_F(fileName, function, fixture<optional>)**
+function **mock(object)**
 
-function **CREATE_MOCK(object)**
+function **isTrue(value)**
 
-function **CHECK_TRUE(value)**
+function **isNotTrue(value)**
 
-function **CHECK_NOT_TRUE(value)**
+function **isFalse(value)**
 
-function **CHECK_FALSE(value)**
+function **isNotFalse(value)**
 
-function **CHECK_NOT_FALSE(value)**
+function **isUndefined(value)**
 
-function **CHECK_UNDEFINED(value)**
+function **isNotUndefined(value)**
 
-function **CHECK_NOT_UNDEFINED(value)**
+function **isNull(value)**
 
-function **CHECK_NULL(value)**
+function **isNotNull(value)**
 
-function **CHECK_NOT_NULL(value)**
+function **actualEqualExpected(actual, expected)**
 
-function **CHECK_ACTUAL_EQUAL_EXPECTED(actual, expected)**
+function **actualNotEqualExpected(actual, expected)**
 
-function **CHECK_ACTUAL_EQUAL_EXPECTED_OBJECT(actual, expected)**
-
-function **CHECK_ACTUAL_DIFFERENT_EXPECTED(actual, expected)**
-
-function **CHECK_ACTUAL_DIFFERENT_EXPECTED_OBJECT(actual, expected)**
+function **actualDeepEqualExpected(actual, expected)**

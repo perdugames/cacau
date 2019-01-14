@@ -1,7 +1,7 @@
 {
   "name": "cacau",
   "version": "1.9.0",
-  "description": "Test API in JavaScript Client.",
+  "description": "Test API in JavaScript.",
   "main": "cacau.js",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",

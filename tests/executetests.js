@@ -6,6 +6,7 @@ import './unit/runner_test';
 
 // INTERFACES
 import './interfaces/new_tdd_test';
+import './interfaces/bdd_test';
 
 // HOOK
 import './unit/before_all_test';
