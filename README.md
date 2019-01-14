@@ -35,7 +35,7 @@ cacau.reporter('Min');
 //or
 cacau.ui('NewTdd').reporter('Min');
 ```
-4 - Write your tests (I chose the interface "NewTdd", see #Interfaces to see other interfaces available):
+4 - Write your tests (I chose the interface "NewTdd", see ![#Interfaces](https://github.com/perdugames/cacau#interfaces) to see other interfaces available):
 
 ```javascript
 suite('Suite 1', function() {
@@ -54,7 +54,7 @@ suite('Suite 1', function() {
     
 });
 ```
-The Cacau already comes with an assertion library you can use, check #API for assertion functions available, but you can also use another assertion library like ChaiJS for example.
+The Cacau already comes with an assertion library you can use, check ![#API](https://github.com/perdugames/cacau#api) for assertion functions available, but you can also use another assertion library like ChaiJS for example.
 
 ```javascript
 suite('Suite 1', function() {
@@ -302,7 +302,6 @@ Cacau currently has only one reporter:
 Min:
 
 ![cacau](./images/reporter_min.png)
-
 
 #### Running Cacau in the Browser:
 
