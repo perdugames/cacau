@@ -28,3 +28,4 @@ import './reporters/min_test';
 
 // FUNCTIONAL
 import './functional/cacau_test';
+import './functional/cacau_test2';
